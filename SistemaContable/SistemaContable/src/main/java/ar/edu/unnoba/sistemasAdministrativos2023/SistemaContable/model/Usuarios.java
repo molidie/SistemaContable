@@ -1,16 +1,17 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 
+
 @Entity
-@Table(name="admins")
-public class Admin  implements UserDetails {
+@Table(name="usuarios")
+public class Usuarios implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,7 +41,7 @@ public class Admin  implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.getEmail();
+        return null;
     }
 
     public void setPassword(String password) {
@@ -72,7 +73,7 @@ public class Admin  implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
 
@@ -97,8 +98,7 @@ public class Admin  implements UserDetails {
     }
 
 
+
+
+
 }
-
-
-
-
