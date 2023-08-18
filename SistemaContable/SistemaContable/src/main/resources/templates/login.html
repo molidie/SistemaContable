@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="shortcut icon" href="/css/admin.png">
+        <title>Login Gestor</title>
+    </head>
+    <body>
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+
+        <div class="card bg-light mb-3 container" style="max-width: 18rem;">
+            <div class="card-header centro">Login Gestor</div>
+            <div class="card-body">
+        <form th:action="@{/login}"  method="post">
+            <div><label for="exampleInputEmail1"> User Name : <input type="email"class="form-control" id="exampleInputEmail1" name="email"/> </label></div>
+            <div><label for="exampleInputPassword1"> Password: <input type="password" class="form-control" id="exampleInputPassword1" name="password"/> </label></div>
+            <div> <button type="submit" class="btn btn-primary centrar">Submit</button></div>
+
+
+    </form>
+                </div>
+                </div>
+    </body>
+</html>
+
+
