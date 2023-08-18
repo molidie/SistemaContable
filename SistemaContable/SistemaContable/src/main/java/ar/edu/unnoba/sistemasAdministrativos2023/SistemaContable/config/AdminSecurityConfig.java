@@ -26,7 +26,7 @@ public class AdminSecurityConfig {
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
         http
-                .antMatcher("/admin/**")
+                .antMatcher("/**")
                 .userDetailsService(adminServiceImp)
                 .authorizeHttpRequests((requests) -> requests
                         .anyRequest().hasAuthority("ROLE_ADMIN")
