@@ -13,43 +13,7 @@
 <body>
 </head>
 <body>
-<header th:fragment="header">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">UNNOBA</a>
-      <button class="navbar-toggler" type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse"
-           id="navbarSupportedContent">
-        <ul class="navbar-nav m-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/admins/usuarios}">Usuarios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/admins}">Administradores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/admins/eventos}">Eventos</a>
-          </li>
-        </ul>
 
-        <form action="#" th:action="@{/admins/logout}" th:method="post"
-              class="d-flex">
-          <input class="btn btn-primary form-control me-2"
-                 type="submit" value="Cerrar sesión"
-                 onclick="return confirm('¿Desea cerrar sesión?');">
-        </form>
-
-
-      </div>
-    </div>
-  </nav>
-</header>
 <div class="container">
   <div class="card p-5">
     <div class="card-header bg-primary"></div>

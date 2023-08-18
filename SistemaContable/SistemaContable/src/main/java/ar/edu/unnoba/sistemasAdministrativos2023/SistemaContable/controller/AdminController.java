@@ -24,7 +24,7 @@ public class AdminController {
     @GetMapping("/new")
     public String adminNew(Model model) {
         model.addAttribute("admin", new Admin());
-        return "admin/nuevoAdmin"; //retorna el nombre del html
+        return "admin/nuevo"; //retorna el nombre del html
     }
 
     @GetMapping
