@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdminServiceImp implements IAdminService, UserDetailsService {
-    @Autowired
+public class AdminServiceImp implements IAdminService, UserDetailsService{
+ @Autowired
     private AdminRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return (UserDetails) repository.findByEmail(email);
+        return (UserDetails) repository.findByUsername(email);
     }
 
     @Override
     public Admin create(Admin admin) {
-        if (repository.findByEmail(admin.getEmail()) == null) {
+        if (repository.findByUsername(admin.getUsername()) == null) {
             admin.setPassword(new BCryptPasswordEncoder().encode(admin.getPassword()));
             admin = repository.save(admin);
         }
@@ -39,5 +39,6 @@ public class AdminServiceImp implements IAdminService, UserDetailsService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
 }
 
