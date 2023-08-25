@@ -26,11 +26,11 @@ public class UserController {
         return "user/nuevoUser";
     }
 
-    @GetMapping
+    @GetMapping("/home")
     public String index(Model model) {
         List<Usuarios> users = userService.getAll();
         model.addAttribute("user", users);
-        return "user/index";
+        return "user/home";
     }
 
     @PostMapping

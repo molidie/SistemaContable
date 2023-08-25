@@ -1,11 +1,9 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.config;
 
-
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.AdminServiceImp;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,40 +15,44 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 
-public class SecurityConfig {
-    private AdminServiceImp userDetailsService;
+public class UserConfig {
+
+    private UserServiceImp userDetailsService;
 
     @Autowired
-    public SecurityConfig(AdminServiceImp userDetailsService) {
+    public UserConfig(UserServiceImp userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
-    public UserDetailsService getUserDetailsService() {
+    public UserServiceImp getUserDetailsService() {
         return userDetailsService;
     }
 
+    public void setUserDetailsService(UserServiceImp userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
-    public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .antMatcher("/admin/**")
+                .antMatcher("/user/**")
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/webjars/**", "/resources/**","/css/**").permitAll()
-                        .anyRequest().hasAuthority("ROLE_ADMIN")
+                        .anyRequest().hasAuthority("ROLE_USER")
 
                 )
 
                 .formLogin((form) -> form
-                        .loginPage("/admin/login")
-                        .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admins/home")
+                        .loginPage("/user/login")
+                        .loginProcessingUrl("/user/login")
+                        .defaultSuccessUrl("/user/home")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
-
     @Bean
     public UserDetailsService userDetailsService(){
         return this.userDetailsService;
@@ -68,5 +70,9 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
 
+    }
+
+    public void setUserServiceImp(UserServiceImp userServiceImp) {
+        this.userDetailsService = userServiceImp;
     }
 }

@@ -40,5 +40,9 @@ public class AdminServiceImp implements IAdminService, UserDetailsService{
         repository.deleteById(id);
     }
 
+    public Admin buscarAdmin(String email){
+        return repository.findByUsername(email);
+    }
+
 }
 

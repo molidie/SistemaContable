@@ -1,4 +1,5 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.config.Rol;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,8 @@ public class Admin  implements UserDetails {
 
     @Column(nullable = false)
     private String apellido;
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
 
     public Long getId() {
         return id;
@@ -67,6 +70,15 @@ public class Admin  implements UserDetails {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = Rol.ROLE_ADMIN;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));

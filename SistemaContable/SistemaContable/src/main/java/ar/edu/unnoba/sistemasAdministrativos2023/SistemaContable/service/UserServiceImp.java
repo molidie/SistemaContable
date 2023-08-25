@@ -1,8 +1,6 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service;
 
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Admin;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.AdminRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.UseerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +19,12 @@ public class UserServiceImp implements IUserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return (UserDetails) repository.findByEmail(email);
+        return (UserDetails) repository.findByUsername(email);
     }
 
     @Override
     public Usuarios create(Usuarios user) {
-        if (repository.findByEmail(user.getEmail()) == null) {
+        if (repository.findByUsername(user.getUsername()) == null) {
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             user = repository.save(user);
         }

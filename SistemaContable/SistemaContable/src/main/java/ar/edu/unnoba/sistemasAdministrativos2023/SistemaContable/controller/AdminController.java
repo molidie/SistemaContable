@@ -3,6 +3,7 @@ package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Admin;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +28,11 @@ public class AdminController {
         return "admin/nuevo"; //retorna el nombre del html
     }
 
-    @GetMapping
+    @GetMapping("/home")
     public String index(Model model) {
         List<Admin> admins = adminService.getAll();
         model.addAttribute("admins", admins);
-        return "admin/index";
+        return "admin/home";
     }
 
     @PostMapping
