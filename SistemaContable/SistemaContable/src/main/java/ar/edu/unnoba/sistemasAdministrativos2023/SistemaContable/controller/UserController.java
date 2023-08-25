@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/new")
     public String UserNew(Model model) {
         model.addAttribute("user", new Usuarios());
-        return "user/nuevoUser";
+        return "user/nuevo";
     }
 
     @GetMapping("/home")

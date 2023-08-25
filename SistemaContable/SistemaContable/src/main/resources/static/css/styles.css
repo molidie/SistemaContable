@@ -12,7 +12,7 @@ body{
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background: linear-gradient(135deg,#0000ff, #e4e9f8);
+    background: linear-gradient(135deg,#e85d04, #f1a164);
 }
 .container{
     max-width: 700px;
@@ -34,7 +34,7 @@ body{
     bottom: 0;
     height: 3px;
     width: 250px;
-    background: linear-gradient(135deg,#0000ff, #e4e9f8);
+    background: linear-gradient(135deg,#e85d04, #f1a164);
 }
 .container form .user-details{
     display: flex;
@@ -62,7 +62,7 @@ form .user-details .input-box{
 }
 .user-details .input-box input:focus,
 .user-details .input-box input:valid{
-    border-color: #6d58e9;
+    border-color: #e85d04;
 }
 form .button{
     height: 45px;
@@ -73,7 +73,7 @@ form .button input{
     width: 100%;
     outline: none;
     color: #fff;
-    background: linear-gradient(-135deg,#0000ff, #e4e9f8);
+    background: linear-gradient(-135deg,#e85d04, #f1a164);
     border-radius: 5px;
     border: none;
     font-size: 18px;
@@ -83,7 +83,7 @@ form .button input{
 }
 
 form .button input:hover{
-    background: linear-gradient(135deg,#00003a, #5d6985);
+    background: linear-gradient(135deg,#7a3103, #e29b6e);
 }
 
 @media(max-width: 584px){
