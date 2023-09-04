@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <title>Nuevo Usuario</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="title">Registrar Asiento</div>
+    <form action="#" id="miFormulario" th:action="@{/admin/asiento}" th:object="${asiento}" method="post">
+        <div class="user-details">
+
+            <div class="input-box">
+                <span class="details">Debe</span>
+                <input type="number" id="campoDebe" th:field="*{debe}" placeholder="00" required>
+            </div>
+
+            <div class="input-box">
+                <span class="details">Haber</span>
+                <input type="number" id="campoHaber" th:field="*{haber}" placeholder="00" required>
+            </div>
+
+                <label>
+                    <input type="radio" name="opcion" value="debe" checked> Debe
+                </label>
+                <label>
+                    <input type="radio" name="opcion" value="haber"> Haber
+                </label>
+
+                <button type="button" onclick="habilitarCampo()">Seleccionar</button>
+
+
+            <div class="input-box">
+                 <span class="details">Saldo</span>
+                 <input type="number"th:field="*{saldo}"placeholder="00000.00" required>
+             </div>
+
+            <div class="input-box">
+                 <span class="details">Fecha</span>
+                 <input type="date"th:field="*{fecha}"placeholder="dd/mm/aaaa" >
+             </div>
+        </div>
+
+
+        <div class="button">
+            <input type="submit" value="Registrar" name="asientoCuenta">
+
+        </div>
+
+    </form>
+</div>
+
+<script>
+    campoDebe.disabled = true;
+    campoHaber.disabled = true;
+    function habilitarCampo() {
+        var opcionSeleccionada = document.querySelector('input[name="opcion"]:checked').value;
+        var campoDebe = document.getElementById('campoDebe');
+        var campoHaber = document.getElementById('campoHaber');
+
+        if (opcionSeleccionada === 'debe') {
+            campoDebe.disabled = false;
+            campoHaber.disabled = true;
+            campoHaber = null
+        } else {
+            campoDebe.disabled = true;
+            campoHaber.disabled = false;
+            campoDebe = null
+        }
+    }
+</script>
+
+</body>
+</html>
