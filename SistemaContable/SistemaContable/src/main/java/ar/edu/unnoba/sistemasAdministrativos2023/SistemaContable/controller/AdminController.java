@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/admins")
+@RequestMapping("/admin")
 public class AdminController {
 
     private IAdminService adminService;
@@ -31,19 +31,19 @@ public class AdminController {
     @GetMapping("/home")
     public String index(Model model) {
         List<Admin> admins = adminService.getAll();
-        model.addAttribute("admins", admins);
+        model.addAttribute("admin", admins);
         return "admin/home";
     }
 
     @PostMapping
     public String create(@ModelAttribute Admin administrator) {
         adminService.create(administrator);
-        return "redirect:/admins";
+        return "redirect:/admin/home"; /*esto es enviado por url*/ 
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         adminService.delete(id);
-        return "redirect:/admins";
+        return "redirect:/admin/home";
     }
 }
