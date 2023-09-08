@@ -32,6 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
         http
+        
                 .antMatcher("/admin/**")
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests((requests) -> requests
@@ -43,9 +44,22 @@ public class SecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/admin/login")
                         .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admins/home")
+                        .defaultSuccessUrl("/admin/home")
                         .permitAll()
                 )
+                /*
+                .antMatcher("/admin/**")
+                .userDetailsService(userDetailsService)
+                .authorizeHttpRequests((requests) -> requests
+                    .anyRequest().hasAuthority("ROLE_ADMIN")
+                )
+                .formLogin((form) -> form
+                    .loginPage("/admin/login")
+                    .usernameParameter("email")
+                    .loginProcessingUrl("/admin/login")
+                    .defaultSuccessUrl("/admins/home")
+                    .permitAll()
+                )*/
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
