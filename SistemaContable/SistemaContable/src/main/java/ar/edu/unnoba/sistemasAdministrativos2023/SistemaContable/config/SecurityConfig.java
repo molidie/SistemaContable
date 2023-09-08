@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 public class SecurityConfig {
     private AdminServiceImp userDetailsService;
-/**
+
     @Autowired
     public SecurityConfig(AdminServiceImp userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -68,5 +68,5 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
 
-    }**/
+    }
 }

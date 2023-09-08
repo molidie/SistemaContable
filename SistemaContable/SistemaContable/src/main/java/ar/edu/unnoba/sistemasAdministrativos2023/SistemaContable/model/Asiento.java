@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +27,9 @@ public class Asiento implements UserDetails{
 
     @Column(name = "saldo")
     private float saldo;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fecha")
-    private Date fecha ;
+    private LocalDate fecha ;
 
     @Column(name = "descripcion")
     private  String descripcion;
@@ -42,9 +43,6 @@ public class Asiento implements UserDetails{
             joinColumns = @JoinColumn(name = "asiento_id"),
             inverseJoinColumns = @JoinColumn(name = "cuenta_id")
     )
-
-
-
     private List<Cuenta> cuentas;
 
 
@@ -88,11 +86,11 @@ public class Asiento implements UserDetails{
         this.id = id;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
