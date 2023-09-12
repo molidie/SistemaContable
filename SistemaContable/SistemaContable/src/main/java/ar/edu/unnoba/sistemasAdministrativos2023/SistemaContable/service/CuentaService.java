@@ -10,4 +10,6 @@ public interface CuentaService {
     public Cuenta create(Cuenta user);
     public List<Cuenta> getAll();
     public void delete(Long id);
+    public Cuenta obtenerCuentaPorId(Long cuentaId);
+
 }

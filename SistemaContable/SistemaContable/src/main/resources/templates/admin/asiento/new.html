@@ -44,12 +44,23 @@
                 <span class="details">Fecha</span>
                 <input type="date"th:field="*{fecha}"placeholder="dd/mm/aaaa" >
             </div>
-        </div>
+
+
+            <div class="form-group">
+                <label for="cuenta">Selecciona el tipo de cuenta:</label>
+                <select id="cuenta" name="cuentaId" class="form-control">
+                    <option value="">Selecciona una cuenta</option>
+                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"></option>
+                </select>
+            </div>
+
+
 
 
         <div class="button">
             <input type="submit" value="Registrar" name="asientoCuenta">
 
+        </div>
         </div>
 
     </form>

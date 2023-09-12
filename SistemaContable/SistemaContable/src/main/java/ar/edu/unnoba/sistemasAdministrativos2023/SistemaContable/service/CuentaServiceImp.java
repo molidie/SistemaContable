@@ -38,17 +38,23 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
          Cuenta cuenta1 = cuentaRepository.save(cuenta);
          Cuenta padre = cuenta1.getPadre();
          padre.getHijos().add(cuenta); //se asigna omo hijos a su padre
+
          return cuenta1;
     }
 
     @Override
     public List<Cuenta> getAll() {
-        return null;
+        return cuentaRepository.findAll();
     }
 
     @Override
     public void delete(Long id) {
 
+    }
+
+    @Override
+    public Cuenta obtenerCuentaPorId(Long cuentaId) {
+        return cuentaRepository.findById(cuentaId).orElse(null);
     }
 
     @Override

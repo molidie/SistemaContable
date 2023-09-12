@@ -23,12 +23,16 @@ public class CuentaController {
     @GetMapping("/new")
     public String UserNew(Model model) {
         model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("cuentas", cuentaService.getAll()); // Obtén todas las cuentas disponibles
+
         return "/admin/cuenta/newcuenta";
     }
 
     @PostMapping
-    public String create(@ModelAttribute Cuenta cuenta) {
+    public String create(@ModelAttribute Cuenta cuenta,Long cuentaId) {
+        Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
+        cuenta.setPadre(cuentaSeleccionada);
         cuentaService.create(cuenta);
-        return "redirect:/admins/home"; //lo malo es que si el id padre no existe lo pone en null
+        return "redirect:/admin/home"; //lo malo es que si el id padre no existe lo pone en null
     }
 }

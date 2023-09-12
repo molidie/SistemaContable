@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +35,7 @@ public class Asiento implements UserDetails{
     @Column(name = "descripcion")
     private  String descripcion;
 
-    public Asiento() {
-    }
+
 
     @ManyToMany
     @JoinTable(
@@ -45,6 +45,10 @@ public class Asiento implements UserDetails{
     )
     private List<Cuenta> cuentas;
 
+    public Asiento() {
+        this.cuentas = new ArrayList<>();
+
+    }
 
     public List<Cuenta> getCuentas() {
         return cuentas;

@@ -28,7 +28,7 @@ public class SecurityConfig {
     public UserDetailsService getUserDetailsService() {
         return userDetailsService;
     }
-
+/**
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
         http
@@ -59,11 +59,11 @@ public class SecurityConfig {
                     .loginProcessingUrl("/admin/login")
                     .defaultSuccessUrl("/admins/home")
                     .permitAll()
-                )*/
+                )
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
-    }
+    }**/
 
     @Bean
     public UserDetailsService userDetailsService(){

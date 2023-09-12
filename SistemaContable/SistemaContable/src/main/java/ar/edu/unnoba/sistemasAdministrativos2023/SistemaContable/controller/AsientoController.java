@@ -1,8 +1,11 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,22 +23,39 @@ import java.util.List;
 @RequestMapping("/admin/asiento")
 public class AsientoController {
     private IAsientoService asientoService;
+    private CuentaService cuentaService;
 
     public AsientoController(IAsientoService asientoService) {
         this.asientoService = asientoService;
     }
 
+    @Autowired
+    public AsientoController(IAsientoService asientoService, CuentaService cuentaService) {
+        this.asientoService = asientoService;
+        this.cuentaService = cuentaService;
+    }
+
     @GetMapping("/new")
     public String UserNew(Model model) {
+
         model.addAttribute("asiento", new Asiento());
+        model.addAttribute("cuentas", cuentaService.getAll()); // Obtén todas las cuentas disponibles
         return "admin/asiento/new";
     }
 
     @PostMapping
-    public String create(@ModelAttribute Asiento asiento) {
+    public String create(@ModelAttribute Asiento asiento, Long cuentaId) {
+        Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
+        if (asiento.getCuentas() == null) {
+            asiento.setCuentas(new ArrayList<>());
+        }
+        asiento.getCuentas().add(cuentaSeleccionada);
+        cuentaSeleccionada.getAsientos().add(asiento);
         asientoService.create(asiento);
-        return "redirect:/admins/home";
+
+        return "redirect:/admin/home";
     }
+
 
   /**  @GetMapping("/librodiario")
 
