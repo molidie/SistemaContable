@@ -1,9 +1,8 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaServiceImp;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +18,6 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
-
     @GetMapping("/new")
     public String UserNew(Model model) {
         model.addAttribute("cuenta", new Cuenta());
@@ -29,10 +27,10 @@ public class CuentaController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Cuenta cuenta,Long cuentaId) {
+    public String create(@ModelAttribute Cuenta cuenta, Long cuentaId) {
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         cuenta.setPadre(cuentaSeleccionada);
         cuentaService.create(cuenta);
-        return "redirect:/admin/home"; //lo malo es que si el id padre no existe lo pone en null
+        return "redirect:/admin/home"; // lo malo es que si el id padre no existe lo pone en null
     }
 }

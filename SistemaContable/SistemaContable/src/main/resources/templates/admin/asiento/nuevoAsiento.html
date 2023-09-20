@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar asiento</title>
+    <link rel="stylesheet" href="/css/asientos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body class="bg-light container" id="fondo">
+    <main>
+        <div class="container custom-container">
+            <section class="row">
+                <div class="col">
+                    <div class="card" id="card-custom-one">
+                        <div class="card-header">
+                            <h4 class="card-title text-center bold">REGISTRAR ASIENTO</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="#" id="miFormulario" th:action="@{/admin/asiento}" th:object="${asiento}" method="post" class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="datetime">Fecha:</label>
+                                        <input type="datetime-local" th:field="*{fecha}" class="form-control"
+                                            name="datetime" id="datetime" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nroAsiento">Nro Asiento:</label>
+                                        <input type="number" class="form-control" id="nroAsiento" min="1" step="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descripcion">Descripción:</label>
+                                        <textarea name="textarea" rows="5" th:field="*{descripcion}" class="form-control" id="descripcion" 
+                                            placeholder="Descripcion"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="cuenta">Cuenta:</label>
+                                    <select id="cuenta" name="cuentaId" class="form-control">
+                                        <option value="" disabled selected hidden>Choose a drink</option>
+                                        <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}"
+                                            th:text="${cuenta.nombre}"></option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4 mb-3" id="margen-superior">
+                                    <button type="button" class="btn btn-light" id="planDeCuentas">Plan de
+                                        cuentas</button>
+                                </div>
+                                <div class="col-md-4 mb-3" id="margen-superior">
+                                    <button type="button" class="btn btn-light" id="addCuenta">Agregar cuenta</button>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="monto">Monto:</label>
+                                    <input type="number" class="form-control" id="monto" min="0" step="1" />
+                                </div>
+                                <div class="col-md-4 mb-3" id="margen-superior-radio-btn">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="debe" id="debe"
+                                            name="opcion" onchange="cambiarAlineacion()">
+                                        <label class="form-check-label" for="debe">
+                                            Debe
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="haber" id="haber"
+                                            name="opcion" onchange="cambiarAlineacion()">
+                                        <label class="form-check-label" for="haber">
+                                            Haber
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-light" id="agregar"
+                                        onclick="agregarValorATabla()">Agrega fila</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary " id="guardarAsiento" disabled>Guardar
+                                        Asiento</button>
+                                </div>
+                                <br>
+                                <br>
+
+
+
+                                <div style="max-height: 220px; overflow-y: auto;">
+                                    <table class="table table-ligth table-sm table-hover" id="tamano-tabla">
+                                        <thead>
+                                            <tr>
+                                                <th>Cuenta</th>
+                                                <th>Debe</th>
+                                                <th>Haber</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="fila-asiento" id="fila-actual">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    </main>
+    <script src="/js/asientos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

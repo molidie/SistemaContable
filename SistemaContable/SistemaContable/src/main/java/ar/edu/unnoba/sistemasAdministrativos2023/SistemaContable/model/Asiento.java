@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -13,36 +14,28 @@ import java.util.List;
 
 @Entity
 @Table(name = "Asientos")
-public class Asiento implements UserDetails{
+public class Asiento implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime fecha;
+
+    @Column(name = "descripcion")
+    private String descripcion;
+
     @Column(name = "debe")
     private float debe;
-
 
     @Column(name = "haber")
     private float haber;
 
-
     @Column(name = "saldo")
     private float saldo;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "fecha")
-    private LocalDate fecha ;
-
-    @Column(name = "descripcion")
-    private  String descripcion;
-
-
 
     @ManyToMany
-    @JoinTable(
-            name = "Asiento_Cuenta",
-            joinColumns = @JoinColumn(name = "asiento_id"),
-            inverseJoinColumns = @JoinColumn(name = "cuenta_id")
-    )
+    @JoinTable(name = "Asiento_Cuenta", joinColumns = @JoinColumn(name = "asiento_id"), inverseJoinColumns = @JoinColumn(name = "cuenta_id"))
     private List<Cuenta> cuentas;
 
     public Asiento() {
@@ -90,13 +83,7 @@ public class Asiento implements UserDetails{
         this.id = id;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
 
     public String getDescripcion() {
         return descripcion;
@@ -139,5 +126,13 @@ public class Asiento implements UserDetails{
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 }

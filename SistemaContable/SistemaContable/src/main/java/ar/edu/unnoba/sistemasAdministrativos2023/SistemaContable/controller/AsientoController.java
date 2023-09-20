@@ -2,7 +2,6 @@ package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -40,7 +35,7 @@ public class AsientoController {
 
         model.addAttribute("asiento", new Asiento());
         model.addAttribute("cuentas", cuentaService.getAll()); // Obtén todas las cuentas disponibles
-        return "admin/asiento/new";
+        return "admin/asiento/nuevoAsiento";
     }
 
     @PostMapping
@@ -56,20 +51,19 @@ public class AsientoController {
         return "redirect:/admin/home";
     }
 
-
-  /**  @GetMapping("/librodiario")
-
-    }**/
-
+    /**
+     * @GetMapping("/librodiario")
+     * 
+     * }
+     **/
 
     @GetMapping("/librodiario")
     public String LibroDiario(@RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
-                                     @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
-                                     Model model) {
+            @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
+            Model model) {
         List<Asiento> librodiario = asientoService.obtenerLibroDiarioEntreFechas(fechaDesde, fechaHasta);
         model.addAttribute("libro", librodiario);
         return "/admin/asiento/librodiario";
     }
-
 
 }
