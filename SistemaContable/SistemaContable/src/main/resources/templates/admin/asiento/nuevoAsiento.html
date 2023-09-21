@@ -1,4 +1,70 @@
 <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo asiento</title>
+    <!-- Enlace al CSS de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-custom {
+            background-color: #e85d04;
+            /* Color naranja */
+        }
+
+        .navbar-brand img {
+            max-height: 40px;
+            /* Ajusta el alto máximo de la imagen */
+        }
+    </style>
+</head>
+
+<body style="background-color: #ffffff;">
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/css/AD.png" alt="Logo">
+            </a>
+            <a class="navbar-brand" href="#">Adriel Coorp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cuentas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Asientos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+</html>
+
+<!-- Enlace al JS de Bootstrap (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,7 +78,7 @@
 
     </head>
 
-<body class="bg-light container" id="fondo">
+<body id="fondo">
     <main>
         <div class="container custom-container">
             <section class="row">
@@ -31,7 +97,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="nroAsiento">Nro Asiento:</label>
-                                        <input type="number" class="form-control" id="nroAsiento" min="1" step="1">
+                                        <input type="number" class="form-control" id="nroAsiento" min="1" step="1"readonly placeholder="AC-001">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -51,7 +117,7 @@
                                     </select>
                                 </div>
                             
-                                <div class="col-md-4 mb-3" id="margen-superior">
+                                <div class="col-md-4 mb-6" id="margen-superior">
                                     <button type="button" class="btn btn-light" id="addCuenta">Agregar cuenta</button>
                                 </div>
                                 <div class="col-md-4 mb-3">

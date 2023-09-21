@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 @Controller
 @RequestMapping("/admin/cuenta")
 public class CuentaController {
@@ -18,6 +19,12 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
+    @GetMapping
+    public String index(Model model) {
+        List<Cuenta> cuentas = cuentaService.getAll();
+        model.addAttribute("cuentas", cuentas);
+        return "/admin/cuenta/mostrarCuentas";
+    }   
     @GetMapping("/new")
     public String UserNew(Model model) {
         model.addAttribute("cuenta", new Cuenta());
@@ -31,6 +38,6 @@ public class CuentaController {
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         cuenta.setPadre(cuentaSeleccionada);
         cuentaService.create(cuenta);
-        return "redirect:/admin/home"; // lo malo es que si el id padre no existe lo pone en null
+        return "redirect:/admin/cuenta/"; // lo malo es que si el id padre no existe lo pone en null
     }
 }

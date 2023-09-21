@@ -24,11 +24,15 @@ main{
     margin-top: 15px;
 }
 .card-body{
-    height:35rem ;
+    min-height:35rem ;
+    max-height: auto;
 }
 
 #tamano-tabla{
     max-height: 220px;
+}
+#guardarAsiento{
+    margin-bottom:15px;
 }
 
 
@@ -55,7 +59,9 @@ input[type="radio"]:hover {
     .card-body{
         height:35rem ;
     }
-    
+    #guardarAsiento{
+        margin-bottom:15px;
+    }
 }
 
 
@@ -76,12 +82,15 @@ input[type="radio"]:hover {
     .card-body{
         height:58rem ;
     }
-    
+    #guardarAsiento{
+        margin-bottom:15px;
+    }
     
 }
 
 /* Estilos para el formulario en pantallas más pequeñas, como teléfonos */
 @media (max-width: 576px) {
+
     /* Puedes agregar estilos específicos para pantallas más pequeñas aquí */
     .custom-container {
         max-width: 90%;
@@ -101,4 +110,16 @@ input[type="radio"]:hover {
         margin-left: 0;
         /* Eliminar el margen izquierdo */
     }
+    #guardarAsiento{
+        margin-top: 20px;
+        margin-bottom:20px;
+    }
+    #margen-superior{
+        margin-bottom: 10px;
+    }
+    .card-body{
+        
+        max-height: auto;
+    }
+    
 }
