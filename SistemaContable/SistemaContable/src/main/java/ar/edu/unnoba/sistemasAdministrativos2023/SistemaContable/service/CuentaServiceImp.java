@@ -1,23 +1,28 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.AsientoRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CuentaServiceImp implements CuentaService, UserDetailsService {
     @Autowired
     private CuentaRepository cuentaRepository;
+    private final AsientoRepository asientoRepository;
 
-    public CuentaServiceImp(CuentaRepository cuentaRepository) {
+    public CuentaServiceImp(CuentaRepository cuentaRepository,
+                            AsientoRepository asientoRepository) {
         this.cuentaRepository = cuentaRepository;
+        this.asientoRepository = asientoRepository;
     }
 
     @Override
@@ -32,12 +37,13 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
             cuenta.setPadre(cuentaRepository.getOne(cuenta.getPadre().getId()));
         }
 
-        // Guardar la cuenta en la base de datos
-        Cuenta cuenta1 = cuentaRepository.save(cuenta);
-        Cuenta padre = cuenta1.getPadre();
-        padre.getHijos().add(cuenta); // se asigna omo hijos a su padre
 
-        return cuenta1;
+        // Guardar la cuenta en la base de datos
+         Cuenta cuenta1 = cuentaRepository.save(cuenta);
+         Cuenta padre = cuenta1.getPadre();
+         padre.getHijos().add(cuenta); //se asigna omo hijos a su padre
+
+         return cuenta1;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
 
     @Override
     public void delete(Long id) {
-
+        asientoRepository.deleteById(id);
     }
 
     @Override

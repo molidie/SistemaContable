@@ -14,7 +14,6 @@
     <div class="title">Registrar Asiento</div>
     <form action="#" id="miFormulario" th:action="@{/admin/asiento}" th:object="${asiento}" method="post">
         <div class="user-details">
-
             <div class="input-box">
                 <span class="details">Debe</span>
                 <input type="number" id="campoDebe" th:field="*{debe}" placeholder="00" required>
@@ -34,15 +33,19 @@
 
             <button type="button" onclick="habilitarCampo()">Seleccionar</button>
 
-
             <div class="input-box">
                 <span class="details">Saldo</span>
-                <input type="number"th:field="*{saldo}"placeholder="00000.00" required>
+                <input type="number" id="campoSaldo" th:field="*{saldo}" placeholder="00000.00" required>
             </div>
 
             <div class="input-box">
                 <span class="details">Fecha</span>
-                <input type="date"th:field="*{fecha}"placeholder="dd/mm/aaaa" >
+                <input type="date" th:field="*{fecha}" placeholder="dd/mm/aaaa" required>
+            </div>
+
+            <div class="input-box">
+                <span class="details">Descripcion</span>
+                <input type="text" th:field="*{descripcion}" required>
             </div>
 
 
@@ -50,42 +53,78 @@
                 <label for="cuenta">Selecciona el tipo de cuenta:</label>
                 <select id="cuenta" name="cuentaId" class="form-control">
                     <option value="">Selecciona una cuenta</option>
-                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"></option>
+                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
                 </select>
             </div>
 
-
-
-
-        <div class="button">
-            <input type="submit" value="Registrar" name="asientoCuenta">
+            <div class="button">
+                <input type="submit" value="Registrar" name="asientoCuenta">
+            </div>
 
         </div>
-        </div>
-
     </form>
+
+    <div class="asientos-list">
+        <h2>Asientos Agregados</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Debe</th>
+                <th>Haber</th>
+                <th>Saldo</th>
+                <th>Fecha</th>
+                <th>Cuenta</th>
+            </tr>
+            </thead>
+            <tbody id="asientos-table-body">
+            <!-- Aquí se agregarán los asientos dinámicamente -->
+            <tr th:each="asiento : ${asientos}">
+                <td th:text="${asiento.debe}"></td>
+                <td th:text="${asiento.haber}"></td>
+                <td th:text="${asiento.saldo}"></td>
+                <td th:text="${asiento.fecha}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button type="button" id="guardarButton">Guardar</button>
+    <td><a class="btn btn-outline-danger" th:href="@{/admin/asiento/cancelar}">Cancelar</a></td>
+
+
+
 </div>
 
 <script>
     campoDebe.disabled = true;
     campoHaber.disabled = true;
+    campoSaldo.disabled = true;
+
     function habilitarCampo() {
         var opcionSeleccionada = document.querySelector('input[name="opcion"]:checked').value;
         var campoDebe = document.getElementById('campoDebe');
         var campoHaber = document.getElementById('campoHaber');
+        var campoSaldo = document.getElementById('campoSaldo');
 
         if (opcionSeleccionada === 'debe') {
             campoDebe.disabled = false;
             campoHaber.disabled = true;
-            campoHaber.value=null;
-
+            campoSaldo.disabled = false;
         } else {
             campoDebe.disabled = true;
             campoHaber.disabled = false;
-            campoDebe.value=null;
-
+            campoSaldo.disabled = false;
         }
     }
+
+        // Obtén una referencia al botón "Guardar" por su ID
+        var guardarButton = document.getElementById('guardarButton');
+
+        // Agrega un controlador de eventos para el clic en el botón
+        guardarButton.addEventListener('click', function () {
+        // Realiza la redirección a "/admin/home"
+        window.location.href = '/admin/home';
+    });
+
 </script>
 
 </body>

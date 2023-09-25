@@ -1,8 +1,9 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
-
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 @Controller
 @RequestMapping("/admin/cuenta")
 public class CuentaController {
@@ -19,12 +19,7 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
-    @GetMapping
-    public String index(Model model) {
-        List<Cuenta> cuentas = cuentaService.getAll();
-        model.addAttribute("cuentas", cuentas);
-        return "/admin/cuenta/mostrarCuentas";
-    }   
+
     @GetMapping("/new")
     public String UserNew(Model model) {
         model.addAttribute("cuenta", new Cuenta());
@@ -34,10 +29,10 @@ public class CuentaController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Cuenta cuenta, Long cuentaId) {
+    public String create(@ModelAttribute Cuenta cuenta,Long cuentaId) {
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         cuenta.setPadre(cuentaSeleccionada);
         cuentaService.create(cuenta);
-        return "redirect:/admin/cuenta/"; // lo malo es que si el id padre no existe lo pone en null
+        return "redirect:/admin/home";
     }
 }

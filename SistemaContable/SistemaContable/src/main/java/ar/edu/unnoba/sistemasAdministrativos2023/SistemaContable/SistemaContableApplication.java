@@ -10,4 +10,5 @@ public class SistemaContableApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SistemaContableApplication.class, args);
 	}
+
 }

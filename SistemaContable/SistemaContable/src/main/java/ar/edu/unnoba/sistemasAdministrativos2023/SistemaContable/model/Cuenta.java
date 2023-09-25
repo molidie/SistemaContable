@@ -17,7 +17,7 @@ public class Cuenta implements UserDetails {
     private String nombre;
 
     @Column(name = "codigo")
-    private String codigo;
+    private int codigo;
 
     @Column(name = "tipo")
     private String tipo; //activo pasivo patrimonio neto resultado positivo resultado negativo lo podemos hacer una tabla aparte o un dominio
@@ -86,12 +86,19 @@ public class Cuenta implements UserDetails {
         this.nombre = nombre;
     }
 
-    public String getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setCodigo(int codigo) {
+        if(padre.getHijos() != null){
+            int num =padre.getHijos().size();
+            this.codigo = num +1;
+        }
+        else {
+            this.codigo = codigo;
+        }
+
     }
 
    /** public TipoCuenta getTipo() {
@@ -146,7 +153,7 @@ public class Cuenta implements UserDetails {
 
     @Override
     public String getUsername() {
-        return codigo;
+        return ""; //ver porq lo cambie a string para prbar algo
     }
 
 

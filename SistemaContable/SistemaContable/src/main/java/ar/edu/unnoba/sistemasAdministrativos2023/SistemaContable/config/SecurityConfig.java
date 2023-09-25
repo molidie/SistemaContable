@@ -28,7 +28,7 @@ public class SecurityConfig {
     public UserDetailsService getUserDetailsService() {
         return userDetailsService;
     }
-
+/**
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
         http
@@ -37,22 +37,19 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/webjars/**", "/resources/**","/css/**").permitAll()
-                        .anyRequest().hasAuthority("ROLE_ADMIN")
-
-                )
+                        .anyRequest().hasAuthority("ROLE_ADMIN"))
 
                 .formLogin((form) -> form
                         .loginPage("/admin/login")
                         .loginProcessingUrl("/admin/login")
                         .defaultSuccessUrl("/admin/home")
-                        .permitAll()
-                )
-                
+                        .permitAll())
+
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
-
+**/
     @Bean
     public UserDetailsService userDetailsService(){
         return this.userDetailsService;
