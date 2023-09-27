@@ -91,17 +91,10 @@ public class Cuenta implements UserDetails {
     }
 
     public void setCodigo(int codigo) {
-        if(padre.getHijos() != null){
-            int num =padre.getHijos().size();
-            this.codigo = num +1;
-        }
-        else {
-            this.codigo = codigo;
-        }
-
+        this.codigo = codigo;
     }
 
-   /** public TipoCuenta getTipo() {
+    /** public TipoCuenta getTipo() {
         return tipo;
     }
 

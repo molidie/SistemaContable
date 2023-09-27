@@ -11,5 +11,7 @@ public interface CuentaService {
     public List<Cuenta> getAll();
     public void delete(Long id);
     public Cuenta obtenerCuentaPorId(Long cuentaId);
+    public List<Cuenta> cuentasHijas();
+
 
 }

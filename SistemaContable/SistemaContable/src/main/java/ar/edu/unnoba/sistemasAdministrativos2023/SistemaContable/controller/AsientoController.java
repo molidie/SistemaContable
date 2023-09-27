@@ -39,7 +39,7 @@ public class AsientoController {
     public String UserNew(Model model) {
 
         model.addAttribute("asiento", new Asiento());
-        model.addAttribute("cuentas", cuentaService.getAll());
+        model.addAttribute("cuentas", cuentaService.cuentasHijas());
         listaAsientos.clear();
         return "admin/asiento/new";
     }
@@ -52,7 +52,7 @@ public class AsientoController {
         }
         asiento.getCuentas().add(cuentaSeleccionada);
         cuentaSeleccionada.getAsientos().add(asiento);
-        asientoService.create(asiento);
+
 
         listaAsientos.add(asiento);
         model.addAttribute("cuentas", cuentaService.getAll());
@@ -73,7 +73,7 @@ public class AsientoController {
         return "/admin/asiento/librodiario";
     }
 
-
+/**
     @GetMapping("/cancelar")
     public String cancelar(Model model) {
 
@@ -85,7 +85,25 @@ public class AsientoController {
         }
         listaAsientos.clear(); // Limpia la lista en memoria.
         return "redirect:/admin/asiento/new";
+    }**/
+
+    @GetMapping("/agregar")
+    public String agregar(Model model) {
+        if(listaAsientos.size() <= 1){
+            return "redirect:/admin/asiento/new";
+        }
+        for (Asiento asiento: listaAsientos){
+            asientoService.create(asiento);
+        }
+        return "redirect:/admin/home";
     }
+
+    @GetMapping("/cancelar")
+    public String cancelar(Model model) {
+        return "redirect:/admin/home";
+    }
+
+
 
 
 }

@@ -4,6 +4,7 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.AsientoRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -64,5 +65,18 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
+    }
+
+    @Override
+    public List<Cuenta> cuentasHijas(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasHijas = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getHijos().size()== 0){
+                cuentasHijas.add(c);
+            }
+        }
+        return cuentasHijas;
     }
 }

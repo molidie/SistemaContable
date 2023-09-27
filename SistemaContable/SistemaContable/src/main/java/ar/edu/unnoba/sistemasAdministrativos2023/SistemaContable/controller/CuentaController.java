@@ -7,10 +7,7 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaS
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin/cuenta")
@@ -34,5 +31,13 @@ public class CuentaController {
         cuenta.setPadre(cuentaSeleccionada);
         cuentaService.create(cuenta);
         return "redirect:/admin/home";
+    }
+
+    @GetMapping("/detalle/{cuentaId}")
+    public String cuentaDetalle(@PathVariable("cuentaId") Long cuentaId, Model model) {
+
+        Cuenta cuenta = cuentaService.obtenerCuentaPorId(cuentaId);
+        model.addAttribute("cuenta", cuenta);
+        return "/admin/cuenta/libromayor";
     }
 }
