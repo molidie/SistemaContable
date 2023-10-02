@@ -62,5 +62,8 @@ public class AsientoServiceImp implements IAsientoService, UserDetailsService {
         return asientoRepository.findByFechaBetweenOrderByFechaAsc(fechaDesde, fechaHasta);
     }
 
-
+    @Override
+    public Asiento editarAsiento(Asiento a) {
+        return asientoRepository.save(a);
+    }
 }

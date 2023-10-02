@@ -5,6 +5,7 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,11 @@ import java.util.List;
 public class AsientoController {
     private IAsientoService asientoService;
     private CuentaService cuentaService;
+    private int contador= 0;
+    private float debe ;
+    private float haber ;
+    private float diferencia =debe-haber;
+
 
     public AsientoController(IAsientoService asientoService) {
         this.asientoService = asientoService;
@@ -40,12 +46,17 @@ public class AsientoController {
 
         model.addAttribute("asiento", new Asiento());
         model.addAttribute("cuentas", cuentaService.cuentasHijas());
-        listaAsientos.clear();
+        //listaAsientos.clear();
+        model.addAttribute("asientos", listaAsientos);
+        model.addAttribute("diferencia", diferencia);
         return "admin/asiento/new";
     }
 
     @PostMapping
     public String create(@ModelAttribute Asiento asiento, @RequestParam Long cuentaId, Model model) {
+        float debe1 =0;
+        float haber1 =0;
+
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         if (asiento.getCuentas() == null) {
             asiento.setCuentas(new ArrayList<>());
@@ -54,9 +65,22 @@ public class AsientoController {
         cuentaSeleccionada.getAsientos().add(asiento);
 
 
+
         listaAsientos.add(asiento);
         model.addAttribute("cuentas", cuentaService.getAll());
         model.addAttribute("asientos", listaAsientos);
+
+        asiento.setCodigo(contador);
+        contador+=1;
+
+        for(Asiento a : listaAsientos){
+            debe1+= a.getDebe();
+        }
+        for(Asiento a : listaAsientos){
+            haber1+= a.getHaber();
+        }
+        diferencia=debe1-haber1;
+        model.addAttribute("diferencia", diferencia);
 
         return "admin/asiento/new";
     }
@@ -85,7 +109,7 @@ public class AsientoController {
         }
         listaAsientos.clear(); // Limpia la lista en memoria.
         return "redirect:/admin/asiento/new";
-    }**/
+    }funcion que deje por las dudas**/
 
     @GetMapping("/agregar")
     public String agregar(Model model) {
@@ -93,6 +117,7 @@ public class AsientoController {
             return "redirect:/admin/asiento/new";
         }
         for (Asiento asiento: listaAsientos){
+
             asientoService.create(asiento);
         }
         return "redirect:/admin/home";
@@ -100,10 +125,63 @@ public class AsientoController {
 
     @GetMapping("/cancelar")
     public String cancelar(Model model) {
+        listaAsientos.clear();
         return "redirect:/admin/home";
     }
 
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id, Model model, Asiento asiento) {
+        List<Asiento> asientosParaEliminar = new ArrayList<>();
 
+        for (Asiento a : listaAsientos) {
+            if (a.getCodigo() == id) {
+                diferencia-=a.getDebe();
+                diferencia+=a.getHaber();
+                asientosParaEliminar.add(a);
+            }
+        }
+        for(Asiento a : asientosParaEliminar) {
+            listaAsientos.remove(a);
+        }
+        model.addAttribute("asientos", listaAsientos);
+        model.addAttribute("diferencia", diferencia);
+        return "redirect:/admin/asiento/new";
+    }
+
+    @GetMapping ("/editar/{idE}")
+    public String editarProducto(@PathVariable("idE") Long id, Model  model,Asiento asiento){
+        for (Asiento a : listaAsientos) {
+            if (a.getCodigo() == id) {
+                asiento=a;
+            }
+        }
+        model.addAttribute("asiento",asiento);
+        model.addAttribute("cuentas", cuentaService.getAll());
+
+        return "/admin/asiento/edit";
+    }
+
+    @PostMapping("/editarAsiento/{idE}")
+    public String actualizarProdcuto (@PathVariable("idE") Long id, @ModelAttribute("asien") Asiento asiento, Model model){
+        model.addAttribute("cuentas", cuentaService.getAll());
+
+        for (Asiento a : listaAsientos) {
+            if (a.getCodigo() == id) {
+                a.setDescripcion(asiento.getDescripcion());
+                a.setCodigo(asiento.getCodigo());
+                a.setDebe(asiento.getDebe());
+                a.setHaber(asiento.getHaber());
+                a.setCuentas(asiento.getCuentas());
+                a.setId(id);
+                a.setFecha(a.getFecha());
+
+            }
+        asientoService.editarAsiento(a);
+
+    }
+        return "redirect:/gestor/productos/index";
+
+    }
 
 
 }

@@ -48,7 +48,6 @@
                 <input type="text" th:field="*{descripcion}" required>
             </div>
 
-
             <div class="form-group">
                 <label for="cuenta">Selecciona el tipo de cuenta:</label>
                 <select id="cuenta" name="cuentaId" class="form-control">
@@ -74,24 +73,37 @@
                 <th>Saldo</th>
                 <th>Fecha</th>
                 <th>Cuenta</th>
+                <th>Acciones</th> <!-- Nueva columna para los botones -->
             </tr>
             </thead>
             <tbody id="asientos-table-body">
             <!-- Aquí se agregarán los asientos dinámicamente -->
-            <tr th:each="asiento : ${asientos}">
+            <tr th:each="asiento, rowStat : ${asientos}">
                 <td th:text="${asiento.debe}"></td>
                 <td th:text="${asiento.haber}"></td>
                 <td th:text="${asiento.saldo}"></td>
                 <td th:text="${asiento.fecha}"></td>
+                <td th:text="${diferencia}"></td>
+
+                <td>
+                    <!-- Botón de Editar -->
+                    <a class="btn btn-outline-success"
+                       th:href="@{/admin/asiento/editar/{idE}(idE=${asiento.getCodigo()})}">
+                        Editar
+                    </a>
+                    <!-- Botón de Eliminar -->
+                    <a class="btn btn-outline-danger"
+                       th:href="@{/admin/asiento/eliminar/{id}(id=${asiento.getCodigo()})}">
+                        Eliminar
+                    </a>
+
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
     <td><a class="btn btn-outline-danger" th:href="@{/admin/asiento/cancelar}">Cancelar</a></td>
     <td><a class="btn btn-outline-danger" th:href="@{/admin/asiento/agregar}">Guardar</a></td>
-
-
-
 </div>
 
 <script>
@@ -116,15 +128,14 @@
         }
     }
 
-        // Obtén una referencia al botón "Guardar" por su ID
-        var guardarButton = document.getElementById('guardarButton');
+    // Obtén una referencia al botón "Guardar" por su ID
+    var guardarButton = document.getElementById('guardarButton');
 
-        // Agrega un controlador de eventos para el clic en el botón
-        guardarButton.addEventListener('click', function () {
+    // Agrega un controlador de eventos para el clic en el botón
+    guardarButton.addEventListener('click', function () {
         // Realiza la redirección a "/admin/home"
         window.location.href = '/admin/home';
     });
-
 </script>
 
 </body>

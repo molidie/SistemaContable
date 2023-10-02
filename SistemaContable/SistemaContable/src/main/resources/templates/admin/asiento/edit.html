@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/styleProducto.css">
+  <link rel="shortcut icon" href="/css/prod.png">
+  <title>Title</title>
+</head>
+<body>
+<div class="card bg-light mb-3 container" style="max-width: 18rem;">
+  <img  class="img" src="/css/prod.png" alt="error">
+  <div class="card-header centro">Registro de Producto</div>
+  <div class="card-body">
+
+<div class="card bg-light mb-3 container" style="max-width: 18rem;">
+  <img  class="img" src="/css/prod.png" alt="error">
+  <div class="card-header centro">Registro de Producto</div>
+  <div class="card-body">
+    <form th:action="@{/admin/asiento/editarAsiento/{idE} (idE=${asiento.getCodigo()})}" th:object="${asiento}" method="POST">
+      <div class="form-group">
+
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Debe</span>
+            <input type="number" id="campoDebe" th:field="*{asiento.debe}" placeholder="00" required>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Haber</span>
+            <input type="number" id="campoHaber" th:field="*{asiento.haber}" placeholder="00" required>
+          </div>
+
+          <label>
+            <input type="radio" name="opcion" value="debe" checked> Debe
+          </label>
+          <label>
+            <input type="radio" name="opcion" value="haber"> Haber
+          </label>
+
+          <button type="button" onclick="habilitarCampo()">Seleccionar</button>
+
+          <div class="input-box">
+            <span class="details">Saldo</span>
+            <input type="number" id="campoSaldo" th:field="*{asiento.saldo}" placeholder="00000.00" required>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Fecha</span>
+            <input type="date" th:field="*{asiento.fecha}" placeholder="dd/mm/aaaa" required>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Descripcion</span>
+            <input type="text" th:field="*{asiento.descripcion}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cuenta">Selecciona el tipo de cuenta:</label>
+            <select id="cuenta" name="cuentaId" class="form-control">
+              <option value="">Selecciona una cuenta</option>
+              <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
+            </select>
+          </div>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+</body>
+</html>

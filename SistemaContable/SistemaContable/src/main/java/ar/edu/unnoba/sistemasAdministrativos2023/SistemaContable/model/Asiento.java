@@ -18,6 +18,10 @@ public class Asiento implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "codigo")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int codigo ;
+
     @Column(name = "debe")
     private float debe;
 
@@ -104,6 +108,14 @@ public class Asiento implements UserDetails{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     @Override
