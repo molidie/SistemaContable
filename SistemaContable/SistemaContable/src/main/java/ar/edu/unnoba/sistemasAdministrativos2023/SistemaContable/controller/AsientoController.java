@@ -162,8 +162,9 @@ public class AsientoController {
     }
 
     @PostMapping("/editarAsiento/{idE}")
-    public String actualizarProdcuto (@PathVariable("idE") Long id, @ModelAttribute("asien") Asiento asiento, Model model){
+    public String actualizarProdcuto (@PathVariable("idE") Long id, @ModelAttribute("asiento") Asiento asiento, Model model){
         model.addAttribute("cuentas", cuentaService.getAll());
+        model.addAttribute("asiento",asiento);
 
         for (Asiento a : listaAsientos) {
             if (a.getCodigo() == id) {
@@ -177,9 +178,8 @@ public class AsientoController {
 
             }
         asientoService.editarAsiento(a);
-
     }
-        return "redirect:/gestor/productos/index";
+        return "redirect:/admin/asiento/new";
 
     }
 

@@ -23,12 +23,12 @@
         <div class="user-details">
           <div class="input-box">
             <span class="details">Debe</span>
-            <input type="number" id="campoDebe" th:field="*{asiento.debe}" placeholder="00" required>
+            <input type="number" id="campoDebe" th:field="*{debe}" placeholder="00" required>
           </div>
 
           <div class="input-box">
             <span class="details">Haber</span>
-            <input type="number" id="campoHaber" th:field="*{asiento.haber}" placeholder="00" required>
+            <input type="number" id="campoHaber" th:field="*{haber}" placeholder="00" required>
           </div>
 
           <label>
@@ -42,24 +42,24 @@
 
           <div class="input-box">
             <span class="details">Saldo</span>
-            <input type="number" id="campoSaldo" th:field="*{asiento.saldo}" placeholder="00000.00" required>
+            <input type="number" id="campoSaldo" th:field="*{saldo}" placeholder="00000.00" required>
           </div>
 
           <div class="input-box">
             <span class="details">Fecha</span>
-            <input type="date" th:field="*{asiento.fecha}" placeholder="dd/mm/aaaa" required>
+            <input type="date" th:field="*{fecha}" placeholder="dd/mm/aaaa" required>
           </div>
 
           <div class="input-box">
             <span class="details">Descripcion</span>
-            <input type="text" th:field="*{asiento.descripcion}" required>
+            <input type="text" th:field="*{descripcion}" required>
           </div>
 
           <div class="form-group">
             <label for="cuenta">Selecciona el tipo de cuenta:</label>
             <select id="cuenta" name="cuentaId" class="form-control">
               <option value="">Selecciona una cuenta</option>
-              <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
+            <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
             </select>
           </div>
           </div>
