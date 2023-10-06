@@ -19,7 +19,6 @@ public class Asiento implements UserDetails{
     private Long id;
 
     @Column(name = "codigo")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo ;
 
     @Column(name = "debe")

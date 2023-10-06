@@ -2,22 +2,17 @@ package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
-import org.checkerframework.checker.units.qual.A;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -35,10 +30,14 @@ public class AsientoController {
         this.asientoService = asientoService;
     }
     List<Asiento> listaAsientos = new ArrayList<>();
+    private  CuentaRepository cuentaRepository;
+
     @Autowired
-    public AsientoController(IAsientoService asientoService, CuentaService cuentaService) {
+    public AsientoController(IAsientoService asientoService, CuentaService cuentaService,
+                             CuentaRepository cuentaRepository) {
         this.asientoService = asientoService;
         this.cuentaService = cuentaService;
+        this.cuentaRepository = cuentaRepository;
     }
 
     @GetMapping("/new")
@@ -67,7 +66,7 @@ public class AsientoController {
 
 
         listaAsientos.add(asiento);
-        model.addAttribute("cuentas", cuentaService.getAll());
+        model.addAttribute("cuentas", cuentaService.cuentasHijas());
         model.addAttribute("asientos", listaAsientos);
 
         asiento.setCodigo(contador);
@@ -120,6 +119,7 @@ public class AsientoController {
 
             asientoService.create(asiento);
         }
+        listaAsientos.clear();
         return "redirect:/admin/home";
     }
 
@@ -156,32 +156,47 @@ public class AsientoController {
             }
         }
         model.addAttribute("asiento",asiento);
-        model.addAttribute("cuentas", cuentaService.getAll());
+        model.addAttribute("cuentas", cuentaService.cuentasHijas());
 
         return "/admin/asiento/edit";
     }
 
+
+
     @PostMapping("/editarAsiento/{idE}")
-    public String actualizarProdcuto (@PathVariable("idE") Long id, @ModelAttribute("asiento") Asiento asiento, Model model){
-        model.addAttribute("cuentas", cuentaService.getAll());
-        model.addAttribute("asiento",asiento);
+    public String actualizarProdcuto(@PathVariable("idE") Long id, @ModelAttribute Asiento asiento, Model model) {
+        float debe2 =0;
+        float haber2 =0;
+        model.addAttribute("cuentas", cuentaService.cuentasHijas());
+        model.addAttribute("asiento", asiento);
 
         for (Asiento a : listaAsientos) {
             if (a.getCodigo() == id) {
                 a.setDescripcion(asiento.getDescripcion());
-                a.setCodigo(asiento.getCodigo());
                 a.setDebe(asiento.getDebe());
                 a.setHaber(asiento.getHaber());
-                a.setCuentas(asiento.getCuentas());
-                a.setId(id);
-                a.setFecha(a.getFecha());
+                a.setFecha(asiento.getFecha());
+                for(Cuenta cuenta: a.getCuentas()){
+                    cuenta.getAsientos().remove(a);
+                }
+                a.getCuentas().clear();
+                a.getCuentas().addAll(asiento.getCuentas());
+                for (Cuenta c : a.getCuentas()) {
+                    c.getAsientos().add(a);
+                }
 
+                //asientoService.editarAsiento(a); pasa que si no lo guarda en la bd vio
+                for(Asiento asiento1: listaAsientos){
+                    debe2+=asiento1.getDebe();
+                }
+                for(Asiento asiento1: listaAsientos){
+                    haber2+=asiento1.getHaber();
+                }
+                diferencia=debe2-haber2;
             }
-        asientoService.editarAsiento(a);
-    }
+        }
+
         return "redirect:/admin/asiento/new";
-
     }
-
 
 }

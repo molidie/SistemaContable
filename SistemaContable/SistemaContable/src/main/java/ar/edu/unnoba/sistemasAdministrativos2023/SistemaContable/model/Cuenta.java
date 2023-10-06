@@ -21,7 +21,8 @@ public class Cuenta implements UserDetails {
 
     @Column(name = "tipo")
     private String tipo; //activo pasivo patrimonio neto resultado positivo resultado negativo lo podemos hacer una tabla aparte o un dominio
-  /**  @Column(name = "tipo")
+
+    /**  @Column(name = "tipo")
     @Enumerated(EnumType.STRING)
     private TipoCuenta tipo;**/
 
@@ -42,7 +43,7 @@ public class Cuenta implements UserDetails {
     @OneToMany(mappedBy = "padre", cascade = CascadeType.ALL)
     private List<Cuenta> hijos;
 
-    @ManyToMany(mappedBy = "cuentas")
+    @ManyToMany(mappedBy = "cuentas", fetch = FetchType.EAGER) //le cambiamos el tipo de carga para que el post del controller de editar reconozca la lista,si no hinbernate no lo reconoce
     private List<Asiento> asientos;
     public List<Cuenta> getHijos() {
         return hijos;
@@ -146,7 +147,7 @@ public class Cuenta implements UserDetails {
 
     @Override
     public String getUsername() {
-        return ""; //ver porq lo cambie a string para prbar algo
+        return ""; //ver porq lo cambie a string para prbar algo para que el codigo del producto sea "A-0000001"
     }
 
 
