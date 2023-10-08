@@ -20,14 +20,20 @@
                 <input type="text"th:field="*{nombre}" placeholder="Cuenta" required>
             </div>
 
-           <div class="input-box">
+            <div class="input-box">
                 <span class="details">Tipo</span>
-                <input type="text"th:field="*{tipo}" placeholder="Activo" required>
+                <select th:field="*{tipo}" class="form-control" required>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="PASIVO">Pasivo</option>
+                    <option value="PATRIMONIO_NETO">Patrimonio Neto</option>
+                    <option value="RESULTADO_NEGATIVO">Resultado Negativo</option>
+                    <option value="RESULTADO_POSITIVO">Resultado Positivo</option>
+                </select>
             </div>
 
 
 
-                <div class="input-box">
+            <div class="input-box">
                     <span class="details">codigo</span>
                     <input type="text"th:field="*{codigo}" placeholder="000" required>
 

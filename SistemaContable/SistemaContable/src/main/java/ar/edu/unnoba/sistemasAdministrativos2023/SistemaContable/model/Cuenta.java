@@ -19,12 +19,13 @@ public class Cuenta implements UserDetails {
     @Column(name = "codigo")
     private int codigo;
 
-    @Column(name = "tipo")
+   /** @Column(name = "tipo")
     private String tipo; //activo pasivo patrimonio neto resultado positivo resultado negativo lo podemos hacer una tabla aparte o un dominio
+**/
 
-    /**  @Column(name = "tipo")
+    @Column(name = "tipo")
     @Enumerated(EnumType.STRING)
-    private TipoCuenta tipo;**/
+    private TipoCuenta tipo;
 
     @Column(name = "saldo")
     private boolean saldo;  //recibe saldo es solo las hojas, eje banco y cuenta --> bco provincia bueno solo banco provincia puede recibir saldo, tambien lo podemos pensar como una recursiva
@@ -95,20 +96,15 @@ public class Cuenta implements UserDetails {
         this.codigo = codigo;
     }
 
-    /** public TipoCuenta getTipo() {
+    public TipoCuenta getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
-        if (TipoCuenta.ACTIVO.toString().equals(tipo) ||
-                TipoCuenta.PASIVO.toString().equals(tipo) ||
-                TipoCuenta.PATRIMONIO_NETO.toString().equals(tipo)) {
-            this.tipo = TipoCuenta.valueOf(tipo);
-        } else {
-            throw new IllegalArgumentException("Tipo de cuenta no válido");
-        }
-    }**/
+    public void setTipo(TipoCuenta tipo) {
+        this.tipo = tipo;
+    }
 
+    /**
      public String getTipo() {
         return tipo;
     }
@@ -117,7 +113,7 @@ public class Cuenta implements UserDetails {
         this.tipo = tipo;
     }
 
-
+**/
 
     public boolean isSaldo() {
         return saldo;
