@@ -79,4 +79,77 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
         }
         return cuentasHijas;
     }
+    public List<Cuenta> cuentasHijasNoPadre(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasHijas = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getHijos().size()== 0 && !c.isSaldo()){
+
+                cuentasHijas.add(c);
+            }
+        }
+        return cuentasHijas;
+    }
+    public List<Cuenta> cuentasActivas(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasA = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getTipo().name() == "ACTIVO"){
+
+                cuentasA.add(c);
+            }
+        }
+        return cuentasA;
+    }
+    public List<Cuenta> cuentasPasivas(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasPasivas = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getTipo().name() == "PASIVO"){
+
+                cuentasPasivas.add(c);
+            }
+        }
+        return cuentasPasivas;
+    }
+
+    public List<Cuenta> cuentasPN(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasPN = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getTipo().name() == "PATRIMONIO_NETO"){
+
+                cuentasPN.add(c);
+            }
+        }
+        return cuentasPN;
+    }
+    public List<Cuenta> cuentasRN(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasRN = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getTipo().name() == "RESULTADO_NEGATIVO"){
+
+                cuentasRN.add(c);
+            }
+        }
+        return cuentasRN;
+    }
+    public List<Cuenta> cuentasRP(){
+        List<Cuenta> cuentas = getAll();
+        List<Cuenta> cuentasRP = new ArrayList<>();
+
+        for(Cuenta c : cuentas){
+            if(c.getTipo().name() == "RESULTADO_POSITIVO"){
+
+                cuentasRP.add(c);
+            }
+        }
+        return cuentasRP;
+    }
 }

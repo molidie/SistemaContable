@@ -28,44 +28,78 @@ public class CuentaController {
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         TipoCuenta tipoCuentaSeleccionado = cuenta.getTipo();
         cuenta.setPadre(cuentaSeleccionada);
-        int contadorPadres = 0;
         int codigotemp = 0;
         Cuenta cuentatemp = new Cuenta();
 
-        // Asignar el código según el tipo de cuenta
         int codigo = 0;
         switch (tipoCuentaSeleccionado) {
             case ACTIVO:
                 codigo = 100;
+                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
+                if(codigo == 110){
+                    codigotemp = 11+cuentaSeleccionada.getHijos().size();
+                    codigo = codigotemp * 10;
+                }
+                if(codigo == cuenta.getPadre().getCodigo()){
+                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
+                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
+                }
                 break;
             case PASIVO:
                 codigo = 200;
+                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
+                if(codigo == 210){
+                    codigotemp = 21+cuentaSeleccionada.getHijos().size();
+                    codigo = codigotemp * 10;
+                }
+                if(codigo == cuenta.getPadre().getCodigo()){
+                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
+                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
+                }
                 break;
             case PATRIMONIO_NETO:
                 codigo = 300;
+                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
+                if(codigo == 310){
+                    codigotemp = 31+cuentaSeleccionada.getHijos().size();
+                    codigo = codigotemp * 10;
+                }
+                if(codigo == cuenta.getPadre().getCodigo()){
+                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
+                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
+                }
                 break;
             case RESULTADO_NEGATIVO:
                 codigo = 400;
+                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
+                if(codigo == 410){
+                    codigotemp = 41+cuentaSeleccionada.getHijos().size();
+                    codigo = codigotemp * 10;
+                }
+                if(codigo == cuenta.getPadre().getCodigo()){
+                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
+                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
+                }
                 break;
             case RESULTADO_POSITIVO:
-                codigo = calcularCodigoResultadoPositivo(cuenta);
+                codigo = 500;
+                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
                 if(codigo == 510){
                     codigotemp = 51+cuentaSeleccionada.getHijos().size();
                     codigo = codigotemp * 10;
                 }
-                if(codigo == 511){
-                    codigotemp = 1+cuentaSeleccionada.getHijos().size();
-                    codigo=510+codigotemp;
+                if(codigo == cuenta.getPadre().getCodigo()){
+                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
+                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
                 }
                 break;
             default:
-                // Puedes manejar un valor predeterminado si es necesario
+
                 break;
         }
 
-        // Asignar el código a la cuenta
+
         cuenta.setCodigo(codigo);
-        cuenta.setCodigo(cuentatemp.getCodigo());
         cuentaService.create(cuenta);
         return "redirect:/admin/home";
     }
@@ -79,8 +113,8 @@ public class CuentaController {
     }
 
 
-    private int calcularCodigoResultadoPositivo(Cuenta cuenta) {
-        int codigo = 500; // Valor base para RESULTADO_POSITIVO
+    private int calcularCodigoResultadoPositivo(Cuenta cuenta,int codigo) {
+
         int contador = 0; // Valor base para RESULTADO_POSITIVO
         Cuenta cuentaPadre = cuenta.getPadre();
 
@@ -92,10 +126,10 @@ public class CuentaController {
         }
 
         if(contador == 2){
-            codigo=510;
+            codigo=cuenta.getPadre().getCodigo()+10;
         }
         if(contador == 3){
-            codigo=511;
+            codigo=cuenta.getPadre().getCodigo();
         }
 
         return codigo;
