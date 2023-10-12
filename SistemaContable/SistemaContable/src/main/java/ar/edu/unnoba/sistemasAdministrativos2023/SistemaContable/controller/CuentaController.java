@@ -24,7 +24,7 @@ public class CuentaController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Cuenta cuenta,Long cuentaId) {
+    public String create(@ModelAttribute Cuenta cuenta,Long cuentaId,Model model) {
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         TipoCuenta tipoCuentaSeleccionado = cuenta.getTipo();
         cuenta.setPadre(cuentaSeleccionada);
@@ -98,7 +98,11 @@ public class CuentaController {
                 break;
         }
 
+        if (codigo == 190 || codigo == 290 || codigo == 390 || codigo == 490 || codigo == 590 || codigo == 199 || codigo == 299 || codigo == 399 || codigo == 499 || codigo == 599 || codigo == 600) {
+            model.addAttribute("error", "No se puede crear una cuenta con el código " + codigo);
 
+            return "/admin/cuenta/newcuenta";
+        }
         cuenta.setCodigo(codigo);
         cuentaService.create(cuenta);
         return "redirect:/admin/home";
