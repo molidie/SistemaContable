@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Empresa</title>
+    <!-- Agrega los enlaces a los estilos de Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1>Libro Diario</h1>
+
+    <form action="/admin/asiento/librodiario" method="get">
+        <div class="form-group">
+            <label for="desde">Desde:</label>
+            <input type="date" id="desde" name="desde" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="hasta">Hasta:</label>
+            <input type="date" id="hasta" name="hasta" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Saldo</th>
+            <th scope="col">Debe</th>
+            <th scope="col">Haber</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emp : ${libro}">
+            <td><strong th:text="${emp.fecha}"></strong></td>
+            <td><strong th:text="${emp.saldo}"></strong></td>
+            <td><strong th:text="${emp.debe}"></strong></td>
+            <td><strong th:text="${emp.haber}"></strong></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Agrega el enlace a jQuery y Bootstrap JS (asegúrate de que las URLs sean correctas) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

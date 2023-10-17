@@ -5,24 +5,21 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Column;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/asiento")
-public class AsientoController {
+@RequestMapping("/user/asiento")
+public class AsientoControllerUser {
     private IAsientoService asientoService;
     private CuentaService cuentaService;
     private int contador = 0;
@@ -31,7 +28,7 @@ public class AsientoController {
     private float diferencia = debe - haber;
 
 
-    public AsientoController(IAsientoService asientoService) {
+    public AsientoControllerUser(IAsientoService asientoService) {
         this.asientoService = asientoService;
     }
 
@@ -43,8 +40,8 @@ public class AsientoController {
 
 
     @Autowired
-    public AsientoController(IAsientoService asientoService, CuentaService cuentaService,
-                             CuentaRepository cuentaRepository) {
+    public AsientoControllerUser(IAsientoService asientoService, CuentaService cuentaService,
+                                 CuentaRepository cuentaRepository) {
         this.asientoService = asientoService;
         this.cuentaService = cuentaService;
         this.cuentaRepository = cuentaRepository;
