@@ -31,7 +31,7 @@ public class UserConfig {
     public void setUserDetailsService(UserServiceImp userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-    /**
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -53,7 +53,7 @@ public class UserConfig {
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
-    }**/
+    }
     @Bean
     public UserDetailsService userDetailsService(){
         return this.userDetailsService;

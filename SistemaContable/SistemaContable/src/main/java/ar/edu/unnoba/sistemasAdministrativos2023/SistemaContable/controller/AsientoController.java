@@ -79,10 +79,10 @@ public class AsientoController {
         cuentaSeleccionada.getAsientos().add(asiento);
 
         listaAsientos.add(asiento);
-        Asiento fecha = listaAsientos.get(0);
+        Asiento fecha = listaAsientos.get(0);// hace que la fecha sea siempre la misma
 
 
-        model.addAttribute("cuentas", cuentaService.cuentasHijas());
+        model.addAttribute("cuentas", cuentaService.cuentasHijasNoPadre());
         model.addAttribute("asientos", listaAsientos);
 
         asiento.setCodigo(contador);

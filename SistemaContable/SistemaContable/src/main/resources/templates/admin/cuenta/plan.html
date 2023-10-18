@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Plan de Cuentas</title>
+</head>
+<body>
+<h1>Plan de Cuentas</h1>
+
+<ul th:each="cuenta : ${cuentasJerarquicas}">
+  <li th:utext="${cuenta.nombre}"></li>
+  <th:block th:if="${#lists.isEmpty(cuenta.hijos)}">
+    <ul th:replace="cuenta-list :: cuenta-list (cuentasJerarquicas=${cuenta.hijos})"></ul>
+  </th:block>
+</ul>
+</body>
+</html>

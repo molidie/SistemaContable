@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin/cuenta")
 public class CuentaController {
@@ -29,69 +31,32 @@ public class CuentaController {
         TipoCuenta tipoCuentaSeleccionado = cuenta.getTipo();
         cuenta.setPadre(cuentaSeleccionada);
         int codigotemp = 0;
-        Cuenta cuentatemp = new Cuenta();
+
 
         int codigo = 0;
         switch (tipoCuentaSeleccionado) {
             case ACTIVO:
                 codigo = 100;
-                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
-                if(codigo == 110){
-                    codigotemp = 11+cuentaSeleccionada.getHijos().size();
-                    codigo = codigotemp * 10;
-                }
-                if(codigo == cuenta.getPadre().getCodigo()){
-                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
-                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
-                }
+                codigo = calcularCodigoResultadoPositivo(cuentaSeleccionada,codigo);
                 break;
             case PASIVO:
                 codigo = 200;
-                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
-                if(codigo == 210){
-                    codigotemp = 21+cuentaSeleccionada.getHijos().size();
-                    codigo = codigotemp * 10;
-                }
-                if(codigo == cuenta.getPadre().getCodigo()){
-                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
-                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
-                }
+                codigo = calcularCodigoResultadoPositivo(cuentaSeleccionada,codigo);
                 break;
             case PATRIMONIO_NETO:
                 codigo = 300;
-                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
-                if(codigo == 310){
-                    codigotemp = 31+cuentaSeleccionada.getHijos().size();
-                    codigo = codigotemp * 10;
-                }
-                if(codigo == cuenta.getPadre().getCodigo()){
-                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
-                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
-                }
+                codigo = calcularCodigoResultadoPositivo(cuentaSeleccionada,codigo);
+
                 break;
             case RESULTADO_NEGATIVO:
                 codigo = 400;
-                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
-                if(codigo == 410){
-                    codigotemp = 41+cuentaSeleccionada.getHijos().size();
-                    codigo = codigotemp * 10;
-                }
-                if(codigo == cuenta.getPadre().getCodigo()){
-                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
-                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
-                }
+                codigo = calcularCodigoResultadoPositivo(cuentaSeleccionada,codigo);
+
                 break;
             case RESULTADO_POSITIVO:
                 codigo = 500;
-                codigo = calcularCodigoResultadoPositivo(cuenta,codigo);
-                if(codigo == 510){
-                    codigotemp = 51+cuentaSeleccionada.getHijos().size();
-                    codigo = codigotemp * 10;
-                }
-                if(codigo == cuenta.getPadre().getCodigo()){
-                    codigotemp = 1 + cuentaSeleccionada.getHijos().size();
-                    codigo=cuenta.getPadre().getCodigo()+codigotemp;
-                }
+                codigo = calcularCodigoResultadoPositivo(cuentaSeleccionada,codigo);
+
                 break;
             default:
 
@@ -120,23 +85,35 @@ public class CuentaController {
     private int calcularCodigoResultadoPositivo(Cuenta cuenta,int codigo) {
 
         int contador = 0; // Valor base para RESULTADO_POSITIVO
-        Cuenta cuentaPadre = cuenta.getPadre();
+        Cuenta cuentaPadre = cuenta;
+        Cuenta padre = cuenta;
 
-        while (cuentaPadre != null) {
-
+        while (cuentaPadre != null){
             cuentaPadre = cuentaPadre.getPadre();
-            contador+=1;
-
+            contador++;
+        }
+        if(contador == 1){
+            return  codigo;
         }
 
-        if(contador == 2){
-            codigo=cuenta.getPadre().getCodigo()+10;
+        if (contador == 2){
+            int hijos = cuenta.getHijos().size() * 10;
+            return padre.getCodigo()+ 10 + hijos;
         }
-        if(contador == 3){
-            codigo=cuenta.getPadre().getCodigo();
+
+        if (contador == 3){
+            int hijos = cuenta.getHijos().size();
+            return codigo =padre.getCodigo()+hijos+1;
         }
 
         return codigo;
+    }
+
+    @GetMapping("/plan")
+    public String mostrarCuentasJerarquicas(Model model) {
+        List<Cuenta> cuentasJerarquicas = cuentaService.obtenerCuentasJerarquicas(100); // Asume que tienes un método en CuentaService para obtener cuentas jerárquicas a partir de un código base.
+        model.addAttribute("cuentasJerarquicas", cuentasJerarquicas);
+        return "/admin/cuenta/plan";
     }
     /**while(cuentatemp.getPadre().getPadre() != null){
      codigotemp=contadorPadres*10;

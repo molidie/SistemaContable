@@ -17,12 +17,12 @@
 
             <div class="input-box">
                 <span class="details">Nombre</span>
-                <input type="text"th:field="*{nombre}" placeholder="Cuenta" required>
+                <input type="text" th:field="*{nombre}" placeholder="Cuenta" required>
             </div>
 
             <div class="input-box">
                 <span class="details">Tipo</span>
-                <select th:field="*{tipo}" class="form-control" required>
+                <select id="tipo" name="tipo" class="form-control" required>
                     <option value="ACTIVO">Activo</option>
                     <option value="PASIVO">Pasivo</option>
                     <option value="PATRIMONIO_NETO">Patrimonio Neto</option>
@@ -31,59 +31,75 @@
                 </select>
             </div>
 
-
-
             <div class="input-box">
-                    <span class="details">codigo</span>
-                    <input type="text"th:field="*{codigo}" placeholder="000" required>
-
-                </div>
-                <div class="input-box">
-                    <span class="details">¿Recibe Saldo?</span>
-                    <input type="checkbox" id="recibeSaldo" th:field="*{saldo}">
-
-                </div>
-
-                <div class="input-box">
-                    <span class="details">Saldo actual</span>
-                    <input type="number" id="saldoActual" th:field="*{saldo_actual}" required disabled>
-                </div>
-
-            <!-- <div class="input-box">
-                <span class="details">padre </span>
-                <input type="number"th:field="*{padre}" required>
-            </div> -->
-
-            <div class="form-group">
-                <label for="cuenta">Selecciona el tipo de cuenta:</label>
-                <select id="cuenta" name="cuentaId" class="form-control">
-                    <option value="">Selecciona una cuenta</option>
-                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"></option>
-                </select>
+                <span class="details">Código</span>
+                <input type="text" th:field="*{codigo}" placeholder="000" required>
             </div>
 
+            <div class="input-box">
+                <span class="details">¿Recibe Saldo?</span>
+                <input type="checkbox" id="recibeSaldo" th:field="*{saldo}">
+            </div>
+
+            <div class="input-box">
+                <span class="details">Saldo actual</span>
+                <input type="number" id="saldoActual" th:field="*{saldo_actual}" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="cuentaSelect">Selecciona el tipo de cuenta:</label>
+                <select id="cuentaSelect" name="cuentaId" class="form-control">
+                    <option value="">Selecciona una cuenta</option>
+                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" th:attr="data-tipo=${cuenta.tipo}"></option>
+                </select>
+            </div>
 
         </div>
 
         <div class="button">
             <input type="submit" value="Registrar" name="asientoCuenta">
-
         </div>
 
     </form>
 </div>
 
 <script>
-    // Obtén una referencia al checkbox y al campo "Saldo actual"
-    const checkbox = document.getElementById("recibeSaldo");
-    const saldoActualInput = document.getElementById("saldoActual");
+    document.addEventListener("DOMContentLoaded", function () {
+        const tipoSelect = document.getElementById("tipo");
+        const cuentaSelect = document.getElementById("cuentaSelect");
+        const cuentas = document.querySelectorAll("[data-tipo]");
+        const defaultOptionValue = "0";
 
-    // Agrega un listener para el evento "change" del checkbox
-    checkbox.addEventListener("change", function () {
-        // Si el checkbox está marcado (checked), habilita el campo "Saldo actual"; de lo contrario, deshabilítalo.
-        saldoActualInput.disabled = !checkbox.checked;
+        // Agregar un evento change al campo "Tipo"
+        tipoSelect.addEventListener("change", function () {
+            const selectedTipo = tipoSelect.value;
+
+            // Ocultar todas las opciones
+            Array.from(cuentaSelect.options).forEach(function (option) {
+                option.style.display = "none";
+            });
+
+            // Mostrar solo las opciones que coinciden con el tipo seleccionado
+            let opcionesMostradas = false;
+            cuentas.forEach(function (cuenta) {
+                const cuentaTipo = cuenta.getAttribute("data-tipo");
+                if (cuentaTipo === selectedTipo || selectedTipo === "") {
+                    cuentaSelect.querySelector(`[value="${cuenta.value}"]`).style.display = "block";
+                    opcionesMostradas = true;
+                }
+            });
+
+            // Si no hay opciones disponibles, establecer el valor predeterminado en 0
+            if (!opcionesMostradas) {
+                cuentaSelect.value = defaultOptionValue;
+            }
+        });
+
+        // Inicialmente, mostrar todas las opciones
+        tipoSelect.dispatchEvent(new Event("change"));
     });
 </script>
+
 
 </body>
 </html>

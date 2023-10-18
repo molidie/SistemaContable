@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CuentaServiceImp implements CuentaService, UserDetailsService {
@@ -79,6 +80,7 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
         }
         return cuentasHijas;
     }
+    @Override
     public List<Cuenta> cuentasHijasNoPadre(){
         List<Cuenta> cuentas = getAll();
         List<Cuenta> cuentasHijas = new ArrayList<>();
@@ -152,4 +154,26 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
         }
         return cuentasRP;
     }
+    @Override
+    public List<Cuenta> obtenerCuentasJerarquicas(int codigoBase) {//es para mostrar el plan de cuenta vemos si lo dejamos
+        List<Cuenta> cuentasRaiz = cuentaRepository.obtenerCuentasPorCodigo(codigoBase); // Supongamos que tienes un método en tu repositorio para obtener cuentas con un código base.
+
+        for (Cuenta cuenta : cuentasRaiz) {
+            cuenta.setHijos(recursivamenteObtenerHijos(cuenta.getId()));
+        }
+
+        return cuentasRaiz;
+    }
+    @Override
+    public List<Cuenta> recursivamenteObtenerHijos(Long cuentaId) { //es para mostrar el plan de cuenta vemos si lo dejamos
+        List<Cuenta> hijos = cuentaRepository.obtenerCuentasPorCuentaPadre(cuentaId); // Supongamos que tienes un método en tu repositorio para obtener cuentas hijas de una cuenta padre.
+
+        for (Cuenta hijo : hijos) {
+            hijo.setHijos(recursivamenteObtenerHijos(hijo.getId()));
+        }
+
+        return hijos;
+    }
+
+
 }

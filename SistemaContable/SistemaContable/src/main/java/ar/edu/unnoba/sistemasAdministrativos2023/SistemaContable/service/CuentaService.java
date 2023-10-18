@@ -13,5 +13,9 @@ public interface CuentaService {
     public Cuenta obtenerCuentaPorId(Long cuentaId);
     public List<Cuenta> cuentasHijas();
 
+    public List<Cuenta> cuentasHijasNoPadre();
+    public List<Cuenta> obtenerCuentasJerarquicas(int codigoBase); //es para mostrar el plan de cuenta vemos si lo dejamos
+     List<Cuenta> recursivamenteObtenerHijos(Long cuentaId); //es para mostrar el plan de cuenta vemos si lo dejamos
+
 
 }
