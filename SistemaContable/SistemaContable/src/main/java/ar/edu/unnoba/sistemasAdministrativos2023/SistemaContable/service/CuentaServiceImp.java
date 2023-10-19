@@ -1,10 +1,9 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service;
 
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.AsientoRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CuentaServiceImp implements CuentaService, UserDetailsService {
@@ -86,74 +84,33 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
         List<Cuenta> cuentasHijas = new ArrayList<>();
 
         for(Cuenta c : cuentas){
-            if(c.getHijos().size()== 0 && !c.isSaldo()){
-
+            if(c.isSaldo()){
                 cuentasHijas.add(c);
             }
         }
         return cuentasHijas;
     }
-    public List<Cuenta> cuentasActivas(){
-        List<Cuenta> cuentas = getAll();
-        List<Cuenta> cuentasA = new ArrayList<>();
 
-        for(Cuenta c : cuentas){
-            if(c.getTipo().name() == "ACTIVO"){
+    @Override
+    public float CalcularSaldo(Cuenta cuenta){
+        float saldo =0;
 
-                cuentasA.add(c);
+        if(cuenta.isSaldo() && cuenta.getTipo().name() == "ACTIVO" ){
+            for(Asiento a : cuenta.getAsientos()){
+                saldo += a.getDebe();
+                saldo -= a.getHaber();
             }
         }
-        return cuentasA;
-    }
-    public List<Cuenta> cuentasPasivas(){
-        List<Cuenta> cuentas = getAll();
-        List<Cuenta> cuentasPasivas = new ArrayList<>();
-
-        for(Cuenta c : cuentas){
-            if(c.getTipo().name() == "PASIVO"){
-
-                cuentasPasivas.add(c);
+        if(cuenta.isSaldo() && cuenta.getTipo().name() == "PASIVO" ){
+            for(Asiento a : cuenta.getAsientos()){
+                saldo -= a.getDebe();
+                saldo += a.getHaber();
             }
         }
-        return cuentasPasivas;
+        return saldo;
     }
 
-    public List<Cuenta> cuentasPN(){
-        List<Cuenta> cuentas = getAll();
-        List<Cuenta> cuentasPN = new ArrayList<>();
 
-        for(Cuenta c : cuentas){
-            if(c.getTipo().name() == "PATRIMONIO_NETO"){
-
-                cuentasPN.add(c);
-            }
-        }
-        return cuentasPN;
-    }
-    public List<Cuenta> cuentasRN(){
-        List<Cuenta> cuentas = getAll();
-        List<Cuenta> cuentasRN = new ArrayList<>();
-
-        for(Cuenta c : cuentas){
-            if(c.getTipo().name() == "RESULTADO_NEGATIVO"){
-
-                cuentasRN.add(c);
-            }
-        }
-        return cuentasRN;
-    }
-    public List<Cuenta> cuentasRP(){
-        List<Cuenta> cuentas = getAll();
-        List<Cuenta> cuentasRP = new ArrayList<>();
-
-        for(Cuenta c : cuentas){
-            if(c.getTipo().name() == "RESULTADO_POSITIVO"){
-
-                cuentasRP.add(c);
-            }
-        }
-        return cuentasRP;
-    }
     @Override
     public List<Cuenta> obtenerCuentasJerarquicas(int codigoBase) {//es para mostrar el plan de cuenta vemos si lo dejamos
         List<Cuenta> cuentasRaiz = cuentaRepository.obtenerCuentasPorCodigo(codigoBase); // Supongamos que tienes un método en tu repositorio para obtener cuentas con un código base.

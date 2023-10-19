@@ -77,6 +77,7 @@ public class CuentaController {
     public String cuentaDetalle(@PathVariable("cuentaId") Long cuentaId, Model model) {
 
         Cuenta cuenta = cuentaService.obtenerCuentaPorId(cuentaId);
+        cuenta.setSaldo_actual(cuentaService.CalcularSaldo(cuenta));
         model.addAttribute("cuenta", cuenta);
         return "/admin/cuenta/libromayor";
     }

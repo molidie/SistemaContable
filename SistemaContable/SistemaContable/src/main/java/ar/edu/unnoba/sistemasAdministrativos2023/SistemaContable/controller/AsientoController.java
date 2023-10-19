@@ -6,6 +6,7 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.Cuen
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
 
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/admin/asiento")
 public class AsientoController {
     private IAsientoService asientoService;
+    @Autowired
     private CuentaService cuentaService;
     private int contador = 0;
     private float debe;
@@ -57,8 +59,16 @@ public class AsientoController {
             model.addAttribute("selectedDate", selectedDate);
         }
 
+        // Filtra las cuentas disponibles eliminando las cuentas seleccionadas
+        List<Cuenta> cuentasDisponibles = cuentaService.cuentasHijasNoPadre();
+        for (Asiento a : listaAsientos) {
+            for (Cuenta cuenta : a.getCuentas()) {
+                cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
+            }
+        }
+
         model.addAttribute("asiento", new Asiento());
-        model.addAttribute("cuentas", cuentaService.cuentasHijas());
+        model.addAttribute("cuentas", cuentasDisponibles);
         model.addAttribute("asientos", listaAsientos);
         model.addAttribute("diferencia", diferencia);
 
@@ -70,7 +80,6 @@ public class AsientoController {
         float debe1 = 0;
         float haber1 = 0;
 
-
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         if (asiento.getCuentas() == null) {
             asiento.setCuentas(new ArrayList<>());
@@ -79,8 +88,7 @@ public class AsientoController {
         cuentaSeleccionada.getAsientos().add(asiento);
 
         listaAsientos.add(asiento);
-        Asiento fecha = listaAsientos.get(0);// hace que la fecha sea siempre la misma
-
+        Asiento fecha = listaAsientos.get(0); // hace que la fecha sea siempre la misma
 
         model.addAttribute("cuentas", cuentaService.cuentasHijasNoPadre());
         model.addAttribute("asientos", listaAsientos);
@@ -105,13 +113,27 @@ public class AsientoController {
             response.addCookie(cookie);
         }
 
-        for(Asiento a : listaAsientos){
+        for (Asiento a : listaAsientos) {
             a.setFecha(fecha.getFecha());
         }
+        for (Asiento a : listaAsientos) {
+            listacuentas.removeAll(a.getCuentas());
+        }
 
+        // Filtra las cuentas disponibles eliminando las cuentas seleccionadas
+        List<Cuenta> cuentasDisponibles = cuentaService.cuentasHijasNoPadre();
+        for (Asiento a : listaAsientos) {
+            for (Cuenta cuenta : a.getCuentas()) {
+                cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
+            }
+        }
+
+        // Actualiza la lista de cuentas disponibles en el modelo
+        model.addAttribute("cuentas", cuentasDisponibles);
 
         return "admin/asiento/new";
     }
+
 
 
     @GetMapping("/librodiario")
@@ -189,7 +211,6 @@ public class AsientoController {
     }
 
 
-
     @PostMapping("/editarAsiento/{idE}")
     public String actualizarProdcuto(@PathVariable("idE") Long id, @ModelAttribute Asiento asiento, Model model) {
         float debe2 =0;
@@ -221,6 +242,10 @@ public class AsientoController {
                 }
                 diferencia=debe2-haber2;
             }
+            for(Asiento asiento1 : listaAsientos){
+                asiento1.setFecha(a.getFecha());
+            }
+
         }
 
         return "redirect:/admin/asiento/new";

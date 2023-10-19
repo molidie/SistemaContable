@@ -47,14 +47,12 @@
                 <span class="details">Descripcion</span>
                 <input type="text" th:field="*{descripcion}" required>
             </div>
+            <!-- En tu vista HTML, utiliza la lista de cuentas filtrada en lugar de la lista original -->
+            <select id="cuenta" name="cuentaId" class="form-control">
+                <option value="">Selecciona una cuenta</option>
+                <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
+            </select>
 
-            <div class="form-group">
-                <label for="cuenta">Selecciona el tipo de cuenta:</label>
-                <select id="cuenta" name="cuentaId" class="form-control">
-                    <option value="">Selecciona una cuenta</option>
-                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" required></option>
-                </select>
-            </div>
 
             <div class="button">
                 <input type="submit" value="Registrar" name="asientoCuenta">
