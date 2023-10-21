@@ -111,26 +111,6 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
     }
 
 
-    @Override
-    public List<Cuenta> obtenerCuentasJerarquicas(int codigoBase) {//es para mostrar el plan de cuenta vemos si lo dejamos
-        List<Cuenta> cuentasRaiz = cuentaRepository.obtenerCuentasPorCodigo(codigoBase); // Supongamos que tienes un método en tu repositorio para obtener cuentas con un código base.
-
-        for (Cuenta cuenta : cuentasRaiz) {
-            cuenta.setHijos(recursivamenteObtenerHijos(cuenta.getId()));
-        }
-
-        return cuentasRaiz;
-    }
-    @Override
-    public List<Cuenta> recursivamenteObtenerHijos(Long cuentaId) { //es para mostrar el plan de cuenta vemos si lo dejamos
-        List<Cuenta> hijos = cuentaRepository.obtenerCuentasPorCuentaPadre(cuentaId); // Supongamos que tienes un método en tu repositorio para obtener cuentas hijas de una cuenta padre.
-
-        for (Cuenta hijo : hijos) {
-            hijo.setHijos(recursivamenteObtenerHijos(hijo.getId()));
-        }
-
-        return hijos;
-    }
 
 
 }

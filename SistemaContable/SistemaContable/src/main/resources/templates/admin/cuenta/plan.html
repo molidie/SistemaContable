@@ -1,16 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Plan de Cuentas</title>
+    <meta charset="UTF-8">
+    <title>Plan de Cuentas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e85d04, #f1a164);
+        }
+    </style>
 </head>
 <body>
-<h1>Plan de Cuentas</h1>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Plan de Cuentas</h1>
+                </div>
+                <div class="card-body" style="max-height: 80vh; overflow-y: auto;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cuenta : ${cuentas}">
+                                <td th:text="${cuenta.codigo}"></td>
+                                <td th:text="${cuenta.nombre}"></td>
+                                <td th:text="${cuenta.tipo}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<ul th:each="cuenta : ${cuentasJerarquicas}">
-  <li th:utext="${cuenta.nombre}"></li>
-  <th:block th:if="${#lists.isEmpty(cuenta.hijos)}">
-    <ul th:replace="cuenta-list :: cuenta-list (cuentasJerarquicas=${cuenta.hijos})"></ul>
-  </th:block>
-</ul>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

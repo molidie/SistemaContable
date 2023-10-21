@@ -1,13 +1,14 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.TipoCuenta;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/cuenta")
@@ -15,6 +16,7 @@ public class CuentaController {
 
     @Autowired
     private CuentaService cuentaService;
+    private CuentaRepository cuentaRepository;
 
 
     @GetMapping("/new")
@@ -110,18 +112,29 @@ public class CuentaController {
         return codigo;
     }
 
-    @GetMapping("/plan")
-    public String mostrarCuentasJerarquicas(Model model) {
-        List<Cuenta> cuentasJerarquicas = cuentaService.obtenerCuentasJerarquicas(100); // Asume que tienes un método en CuentaService para obtener cuentas jerárquicas a partir de un código base.
-        model.addAttribute("cuentasJerarquicas", cuentasJerarquicas);
-        return "/admin/cuenta/plan";
-    }
-    /**while(cuentatemp.getPadre().getPadre() != null){
-     codigotemp=contadorPadres*10;
-     contadorPadres+=1;
-     cuentatemp = cuenta.getPadre();
-     }
 
-     codigo = 500+(codigotemp*contadorPadres*cuentaSeleccionada.getHijos().size());**/
+    @GetMapping("/plan")
+    public String mostrarPlanDeCuentas(Model model) {
+        List<Cuenta> cuentas = cuentaService.getAll(); // Obtener todas las cuentas disponibles
+        cuentas.sort(Comparator.comparing(Cuenta::getCodigo)); // Ordenar las cuentas por el código
+        model.addAttribute("cuentas", cuentas);
+        return "/admin/cuenta/plan"; // Devuelve el nombre de la plantilla HTML
+    }
+
+
+
+    // Otros métodos del controlador...
+
+
+
+
+
+        /**while(cuentatemp.getPadre().getPadre() != null){
+         codigotemp=contadorPadres*10;
+         contadorPadres+=1;
+         cuentatemp = cuenta.getPadre();
+         }
+
+         codigo = 500+(codigotemp*contadorPadres*cuentaSeleccionada.getHijos().size());**/
 
 }

@@ -18,8 +18,5 @@ public interface CuentaService {
 
     float CalcularSaldo(Cuenta cuenta);
 
-    public List<Cuenta> obtenerCuentasJerarquicas(int codigoBase); //es para mostrar el plan de cuenta vemos si lo dejamos
-     List<Cuenta> recursivamenteObtenerHijos(Long cuentaId); //es para mostrar el plan de cuenta vemos si lo dejamos
-
 
 }
