@@ -95,13 +95,13 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
     public float CalcularSaldo(Cuenta cuenta){
         float saldo =0;
 
-        if(cuenta.isSaldo() && cuenta.getTipo().name() == "ACTIVO" ){
+        if(cuenta.getTipo().name() == "ACTIVO" || cuenta.getTipo().name() == "RESULTADO_POSITIVO"  ){
             for(Asiento a : cuenta.getAsientos()){
                 saldo += a.getDebe();
                 saldo -= a.getHaber();
             }
         }
-        if(cuenta.isSaldo() && cuenta.getTipo().name() == "PASIVO" ){
+        if(cuenta.getTipo().name() == "PASIVO" || cuenta.getTipo().name() == "RESULTADO_NEGATIVO"  ){
             for(Asiento a : cuenta.getAsientos()){
                 saldo -= a.getDebe();
                 saldo += a.getHaber();

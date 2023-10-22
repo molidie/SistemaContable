@@ -1,64 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles de la Cuenta</title>
-    <!-- Agregar enlace a Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Libro Mayor</title>
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-4">Detalles de la Cuenta</h1>
-    <table class="table table-bordered mt-4">
-        <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Código</th>
-            <th>Tipo</th>
-            <th>Saldo</th>
-            <th>Saldo Actual</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${cuenta.id}"></td>
-            <td th:text="${cuenta.nombre}"></td>
-            <td th:text="${cuenta.codigo}"></td>
-            <td th:text="${cuenta.tipo}"></td>
-            <td th:text="${cuenta.saldo}"></td>
-            <td th:text="${cuenta.saldo_actual}"></td>
-        </tr>
-        </tbody>
-    </table>
+<h1>Libro Mayor</h1>
 
-    <h2>Asientos relacionados:</h2>
-    <table class="table table-bordered mt-4">
-        <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Descripción</th>
-            <th>Debe</th>
-            <th>Haber</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="asiento : ${cuenta.asientos}">
-            <td th:text="${asiento.id}"></td>
-            <td th:text="${asiento.fecha}"></td>
-            <td th:text="${asiento.descripcion}"></td>
-            <td th:text="${asiento.debe}"></td>
-            <td th:text="${asiento.haber}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<form th:action="@{/admin/cuenta/detalle}" method="get">
+    <label for="cuentaId">Selecciona una cuenta:</label>
+    <select name="cuentaId" id="cuentaId">
+        <option value="">Selecciona una cuenta</option>
+        <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"></option>
+    </select>
+    <button type="submit">Ver Libro Mayor</button>
+</form>
 
-<!-- Agregar enlace a Bootstrap JS y jQuery (si es necesario) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<table th:if="${cuenta != null}" border="1">
+    <thead>
+    <tr>
+        <th>Código</th>
+        <th>Fecha</th>
+        <th>Debe</th>
+        <th>Haber</th>
+        <th>Saldo</th>
+        <th>Acciones</th> <!-- Agregamos una columna para las acciones -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="asiento : ${asientos}">
+        <td th:text="${cuenta.codigo}"></td>
+        <td th:text="${asiento.fecha}"></td>
+        <td th:text="${asiento.debe}"></td>
+        <td th:text="${asiento.haber}"></td>
+        <td th:text="${cuenta.saldo_actual}"></td>
+
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

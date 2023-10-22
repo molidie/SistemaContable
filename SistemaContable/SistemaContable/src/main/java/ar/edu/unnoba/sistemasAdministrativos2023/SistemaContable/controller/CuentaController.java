@@ -1,4 +1,5 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.controller;
+import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.TipoCuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
@@ -75,12 +76,14 @@ public class CuentaController {
         return "redirect:/admin/home";
     }
 
-    @GetMapping("/detalle/{cuentaId}")
-    public String cuentaDetalle(@PathVariable("cuentaId") Long cuentaId, Model model) {
+    @GetMapping("/detalle")
+    public String cuentaDetalle(@RequestParam(name = "cuentaId", required = false) Long cuentaId, Model model) {
 
         Cuenta cuenta = cuentaService.obtenerCuentaPorId(cuentaId);
         cuenta.setSaldo_actual(cuentaService.CalcularSaldo(cuenta));
         model.addAttribute("cuenta", cuenta);
+        model.addAttribute("asientos", cuenta.getAsientos());
+        model.addAttribute("cuentas", cuentaService.getAll());
         return "/admin/cuenta/libromayor";
     }
 
@@ -123,7 +126,33 @@ public class CuentaController {
 
 
 
-    // Otros métodos del controlador...
+    @GetMapping ("/editar/{idE}")
+    public String editarProducto(@PathVariable("idE") Long id, Model  model, Cuenta cuenta){
+    if (cuenta.getHijos() == null) {
+        model.addAttribute("cuenta", cuenta);
+        model.addAttribute("cuentas", cuentaService.getAll());
+        return "/admin/cuenta/edit";
+
+    }
+        return "redirect:/admin/cuenta/plan";
+    }
+
+
+
+    @PostMapping("/editarCuenta/{idE}") //error acomodar no llega al postmapping
+    public String actualizarProdcuto(@PathVariable("idE") Long id, @ModelAttribute Cuenta cuenta, Model model) {
+        Cuenta cuentaseleccionada = cuentaService.obtenerCuentaPorId(id);
+        cuentaseleccionada.setId(cuenta.getId());
+        cuentaseleccionada.setPadre(cuenta.getPadre());
+        cuentaseleccionada.setCodigo(cuenta.getCodigo());
+        cuentaseleccionada.setAsientos(cuenta.getAsientos());
+        cuentaseleccionada.setNombre(cuenta.getNombre());
+        cuentaseleccionada.setSaldo(cuenta.isSaldo());
+        cuentaseleccionada.setSaldo_actual(cuenta.getSaldo_actual());
+        cuentaseleccionada.setTipo(cuenta.getTipo());
+
+        return "redirect:/admin/cuenta/plan";
+    }
 
 
 

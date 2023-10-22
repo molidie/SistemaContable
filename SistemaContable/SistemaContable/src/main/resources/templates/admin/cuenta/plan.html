@@ -33,7 +33,13 @@
                                 <td th:text="${cuenta.codigo}"></td>
                                 <td th:text="${cuenta.nombre}"></td>
                                 <td th:text="${cuenta.tipo}"></td>
+
+                                <td>
+                                    <a th:href="@{'/admin/cuenta/editar/' + ${cuenta.id}}">Editar</a> |
+                                    <a th:href="@{'/admin/cuenta/eliminar/' + ${cuenta.id}}">Eliminar</a>
+                                </td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>

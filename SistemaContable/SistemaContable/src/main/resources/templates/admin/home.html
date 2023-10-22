@@ -29,16 +29,28 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Inicio</a>
+          <a class="nav-link"
+             th:href="@{/admin/home/}">
+            Inicio
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Acerca de</a>
+          <a class="nav-link"
+             th:href="@{/admin/cuenta/plan}">
+            Plan de cuentas
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Servicios</a>
+          <a class="nav-link"
+             th:href="@{/admin/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">
+            Libro diario
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contacto</a>
+          <a class="nav-link"
+             th:href="@{/admin/cuenta/detalle?cuentaId=1}">
+            Libro mayor
+          </a>
         </li>
       </ul>
     </div>
