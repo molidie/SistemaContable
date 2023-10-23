@@ -127,8 +127,10 @@ public class CuentaController {
 
 
     @GetMapping ("/editar/{idE}")
-    public String editarProducto(@PathVariable("idE") Long id, Model  model, Cuenta cuenta){
-    if (cuenta.getHijos() == null) {
+    public String editarProducto(@PathVariable("idE") Long id, Model  model){
+        Cuenta cuenta = cuentaService.obtenerCuentaPorId(id);
+
+        if (cuenta.getHijos().size() == 0) {
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("cuentas", cuentaService.getAll());
         return "/admin/cuenta/edit";
@@ -139,12 +141,12 @@ public class CuentaController {
 
 
 
-    @PostMapping("/editarCuenta/{idE}") //error acomodar no llega al postmapping
+    @PostMapping("/editarCuenta/{idE}")
     public String actualizarProdcuto(@PathVariable("idE") Long id, @ModelAttribute Cuenta cuenta, Model model) {
         Cuenta cuentaseleccionada = cuentaService.obtenerCuentaPorId(id);
         cuentaseleccionada.setId(cuenta.getId());
         cuentaseleccionada.setPadre(cuenta.getPadre());
-        cuentaseleccionada.setCodigo(cuenta.getCodigo());
+        calcularCodigoResultadoPositivo(cuentaseleccionada,cuenta.getCodigo());
         cuentaseleccionada.setAsientos(cuenta.getAsientos());
         cuentaseleccionada.setNombre(cuenta.getNombre());
         cuentaseleccionada.setSaldo(cuenta.isSaldo());
@@ -153,6 +155,8 @@ public class CuentaController {
 
         return "redirect:/admin/cuenta/plan";
     }
+
+
 
 
 

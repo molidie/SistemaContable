@@ -26,6 +26,7 @@
                                 <th>Código</th>
                                 <th>Nombre</th>
                                 <th>Tipo</th>
+                                <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,11 +36,13 @@
                                 <td th:text="${cuenta.tipo}"></td>
 
                                 <td>
-                                    <a th:href="@{'/admin/cuenta/editar/' + ${cuenta.id}}">Editar</a> |
-                                    <a th:href="@{'/admin/cuenta/eliminar/' + ${cuenta.id}}">Eliminar</a>
+                                    <a class="btn btn-outline-success"
+                                       th:href="@{/admin/cuenta/editar/{idE}(idE=${cuenta.getId()})}">
+                                        Editar
+                                    </a>
+                                    <a href="javascript:void(0);" class="eliminar-cuenta" data-cuenta-id="${cuenta.id}">Eliminar</a>
                                 </td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -52,5 +55,16 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Manejar clic en el botón "Eliminar"
+        $('.eliminar-cuenta').click(function () {
+            var cuentaId = $(this).data('cuenta-id');
+
+            // Eliminar la fila de la tabla
+            $(this).closest('tr').remove();
+        });
+    });
+</script>
 </body>
 </html>
