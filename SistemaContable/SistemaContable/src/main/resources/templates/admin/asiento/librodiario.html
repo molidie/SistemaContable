@@ -68,6 +68,10 @@
         <div class="form-group">
             <label for="hasta">Hasta:</label>
             <input type="date" id="hasta" name="hasta" class="form-control" required>
+            <a class="btn btn-outline-danger"
+               th:href="@{/admin/asiento/new}">
+                Agregar Asiento
+            </a>
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
