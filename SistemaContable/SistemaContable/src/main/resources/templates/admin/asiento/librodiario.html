@@ -2,11 +2,60 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Empresa</title>
+    <title>Libro Diario</title>
     <!-- Agrega los enlaces a los estilos de Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-custom {
+            background-color: #e85d04; /* Color naranja */
+        }
+        .navbar-brand img {
+            max-height: 40px; /* Ajusta el alto máximo de la imagen */
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: #ffffff;">
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="/css/AD.png" alt="Logo">
+        </a>
+        <a class="navbar-brand" href="#">Mi Página</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link"
+                       th:href="@{/admin/home/}">
+                        Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/admin/cuenta/plan}">
+                        Plan de cuentas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/admin/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">
+                        Libro diario
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/admin/cuenta/detalle?cuentaId=1}">
+                        Libro mayor
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
     <h1>Libro Diario</h1>
@@ -28,16 +77,50 @@
         <tr>
             <th scope="col">Fecha</th>
             <th scope="col">Saldo</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Cuenta</th>
             <th scope="col">Debe</th>
             <th scope="col">Haber</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="emp : ${libro}">
-            <td><strong th:text="${emp.fecha}"></strong></td>
-            <td><strong th:text="${emp.saldo}"></strong></td>
-            <td><strong th:text="${emp.debe}"></strong></td>
-            <td><strong th:text="${emp.haber}"></strong></td>
+        <tr th:each="entry : ${libroAgrupado}">
+            <td><strong th:text="${entry.key}"></strong></td>
+            <td>
+                <ul>
+                    <li th:each="asiento : ${entry.value}">
+                        <strong th:text="${asiento.saldo}"></strong>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="asiento : ${entry.value}">
+                        <strong th:text="${asiento.descripcion}"></strong>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="asiento : ${entry.value}">
+                        <strong th:text="${asiento.cuentas[0].nombre}"></strong>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="asiento : ${entry.value}">
+                        <strong th:text="${asiento.debe}"></strong>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="asiento : ${entry.value}">
+                        <strong th:text="${asiento.haber}"></strong>
+                    </li>
+                </ul>
+            </td>
         </tr>
         </tbody>
     </table>

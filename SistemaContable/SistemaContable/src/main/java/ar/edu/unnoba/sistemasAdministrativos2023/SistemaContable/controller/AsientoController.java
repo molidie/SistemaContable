@@ -17,9 +17,8 @@ import javax.persistence.Column;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/asiento")
@@ -134,8 +133,30 @@ public class AsientoController {
         return "admin/asiento/new";
     }
 
+    @GetMapping("/librodiario")
+    public String LibroDiario(@RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
+                              @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
+                              Model model) {
+        List<Asiento> librodiario = asientoService.obtenerLibroDiarioEntreFechas(fechaDesde, fechaHasta);
 
+        // Agrupa los asientos por fecha utilizando un Map
+        Map<LocalDate, List<Asiento>> asientosAgrupados = librodiario.stream()
+                .collect(Collectors.groupingBy(Asiento::getFecha));
 
+        // Ordena las fechas de menor a mayor
+        List<LocalDate> fechasOrdenadas = asientosAgrupados.keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
+
+        // Crea un nuevo mapa con las fechas ordenadas
+        LinkedHashMap<LocalDate, List<Asiento>> asientosAgrupadosOrdenados = new LinkedHashMap<>();
+        fechasOrdenadas.forEach(fecha -> asientosAgrupadosOrdenados.put(fecha, asientosAgrupados.get(fecha)));
+
+        model.addAttribute("libroAgrupado", asientosAgrupadosOrdenados);
+        return "/admin/asiento/librodiario";
+    }
+
+/**
     @GetMapping("/librodiario")
     public String LibroDiario(@RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
                                      @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
@@ -143,7 +164,7 @@ public class AsientoController {
         List<Asiento> librodiario = asientoService.obtenerLibroDiarioEntreFechas(fechaDesde, fechaHasta);
         model.addAttribute("libro", librodiario);
         return "/admin/asiento/librodiario";
-    }
+    }**/
 
 /**
     @GetMapping("/cancelar")
