@@ -1,0 +1,25 @@
+.align-right {
+    text-align: right;
+}
+
+body {
+    background-color: #e56121;
+    
+}
+
+.container {
+    
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.select2-container .select2-dropdown {
+    max-height: 200px;
+}

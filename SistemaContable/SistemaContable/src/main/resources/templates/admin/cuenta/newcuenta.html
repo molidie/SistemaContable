@@ -1,105 +1,178 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-    <title>Nuevo Usuario</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Registro de asiento</title>
+    <link rel="stylesheet" href="/css/asientos.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <style>
+        .align-right {
+            text-align: right;
+        }
+
+        body {
+            background-color: #e56121;
+
+        }
+
+        .container {
+
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .select2-container .select2-dropdown {
+            max-height: 200px;
+        }
+    </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="title">Registrar Cuenta</div>
-    <form action="#" th:action="@{/admin/cuenta}" th:object="${cuenta}" method="post">
-        <div class="user-details">
-
-            <div class="input-box">
-                <span class="details">Nombre</span>
-                <input type="text" th:field="*{nombre}" placeholder="Cuenta" required>
+    <nav class="navbar navbar-expand-lg navbar-light bg-ligth">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/css/AD.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                Adriel Coorp
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/home}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/cuenta/plan}">Asientos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/cuenta/plan}">Plan de cuentas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            th:href="@{/admin/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">Libro diario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/cuenta/detalle?cuentaId=1}">Libro mayor</a>
+                    </li>
+                </ul>
+                
             </div>
-
-            <div class="input-box">
-                <span class="details">Tipo</span>
-                <select id="tipo" name="tipo" class="form-control" required>
-                    <option value="ACTIVO">Activo</option>
-                    <option value="PASIVO">Pasivo</option>
-                    <option value="PATRIMONIO_NETO">Patrimonio Neto</option>
-                    <option value="RESULTADO_NEGATIVO">Resultado Negativo</option>
-                    <option value="RESULTADO_POSITIVO">Resultado Positivo</option>
-                </select>
-            </div>
-
-            <div class="input-box">
-                <span class="details">Código</span>
-                <input type="text" th:field="*{codigo}" placeholder="000" required>
-            </div>
-
-            <div class="input-box">
-                <span class="details">¿Recibe Saldo?</span>
-                <input type="checkbox" id="recibeSaldo" th:field="*{saldo}">
-            </div>
-
-            <div class="input-box">
-                <span class="details">Saldo actual</span>
-                <input type="number" id="saldoActual" th:field="*{saldo_actual}" required disabled>
-            </div>
-
-            <div class="form-group">
-                <label for="cuentaSelect">Selecciona el tipo de cuenta:</label>
-                <select id="cuentaSelect" name="cuentaId" class="form-control">
-                    <option value="">Selecciona una cuenta</option>
-                    <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}" th:attr="data-tipo=${cuenta.tipo}"></option>
-                </select>
-            </div>
+            <form action="#" th:action="@{/admin/login}" th:method="post" class="d-flex">
+                <input class="btn btn-warning form-control me-2" type="submit" value="Cerrar sesión"
+                    onclick="return confirm('¿Desea cerrar sesión?');">
+            </form>
 
         </div>
+    </nav>
+    <div class="container" style="max-width: 800px;">
+        <h3 class="mb-2">Registrar nueva cuenta</h3>
+        <form action="#" th:action="@{/admin/cuenta}" th:object="${cuenta}" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-2">
+                        <label for="nombre">Nombre:</label>
+                        <br>
+                        <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="Cuenta" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tipo">Selecciona el tipo de cuenta</label>
+                        <select id="tipo" name="tipo" class="form-control" required>
+                            <option value="ACTIVO">Activo</option>
+                            <option value="PASIVO">Pasivo</option>
+                            <option value="PATRIMONIO_NETO">Patrimonio Neto</option>
+                            <option value="RESULTADO_NEGATIVO">Resultado Negativo</option>
+                            <option value="RESULTADO_POSITIVO">Resultado Positivo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cuentaSelect">Selecciona rubro:</label>
+                        <select id="cuentaSelect" name="cuentaId" class="form-control">
+                            <option value="">Selecciona una cuenta</option>
+                            <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"
+                                th:attr="data-tipo=${cuenta.tipo}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-2">
+                        <label for="recibeSaldo">¿Recibe saldo?</label>
+                        <br>
+                        <input type="checkbox" style="width: 2rem; height: 2rem; margin-left: 40px;" id="recibeSaldo" th:field="*{saldo}">
+                    </div>
+                </div>
+                <!--
+                <div class="input-box">
+                    <span class="details">Saldo actual</span>
+                    <input type="number" id="saldoActual" th:field="*{saldo_actual}" required disabled>
+                </div>
+                -->
+            </div>
+            <div class="button">
+                <a class="btn btn-outline-success" type="submit" name="asientoCuenta">Guardar cuenta</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tipoSelect = document.getElementById("tipo");
+            const cuentaSelect = document.getElementById("cuentaSelect");
+            const cuentas = document.querySelectorAll("[data-tipo]");
+            const defaultOptionValue = "0";
 
-        <div class="button">
-            <input type="submit" value="Registrar" name="asientoCuenta">
-        </div>
+            // Agregar un evento change al campo "Tipo"
+            tipoSelect.addEventListener("change", function () {
+                const selectedTipo = tipoSelect.value;
 
-    </form>
-</div>
+                // Ocultar todas las opciones
+                Array.from(cuentaSelect.options).forEach(function (option) {
+                    option.style.display = "none";
+                });
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const tipoSelect = document.getElementById("tipo");
-        const cuentaSelect = document.getElementById("cuentaSelect");
-        const cuentas = document.querySelectorAll("[data-tipo]");
-        const defaultOptionValue = "0";
+                // Mostrar solo las opciones que coinciden con el tipo seleccionado
+                let opcionesMostradas = false;
+                cuentas.forEach(function (cuenta) {
+                    const cuentaTipo = cuenta.getAttribute("data-tipo");
+                    if (cuentaTipo === selectedTipo || selectedTipo === "") {
+                        cuentaSelect.querySelector(`[value="${cuenta.value}"]`).style.display = "block";
+                        opcionesMostradas = true;
+                    }
+                });
 
-        // Agregar un evento change al campo "Tipo"
-        tipoSelect.addEventListener("change", function () {
-            const selectedTipo = tipoSelect.value;
-
-            // Ocultar todas las opciones
-            Array.from(cuentaSelect.options).forEach(function (option) {
-                option.style.display = "none";
-            });
-
-            // Mostrar solo las opciones que coinciden con el tipo seleccionado
-            let opcionesMostradas = false;
-            cuentas.forEach(function (cuenta) {
-                const cuentaTipo = cuenta.getAttribute("data-tipo");
-                if (cuentaTipo === selectedTipo || selectedTipo === "") {
-                    cuentaSelect.querySelector(`[value="${cuenta.value}"]`).style.display = "block";
-                    opcionesMostradas = true;
+                // Si no hay opciones disponibles, establecer el valor predeterminado en 0
+                if (!opcionesMostradas) {
+                    cuentaSelect.value = defaultOptionValue;
                 }
             });
 
-            // Si no hay opciones disponibles, establecer el valor predeterminado en 0
-            if (!opcionesMostradas) {
-                cuentaSelect.value = defaultOptionValue;
-            }
+            // Inicialmente, mostrar todas las opciones
+            tipoSelect.dispatchEvent(new Event("change"));
         });
-
-        // Inicialmente, mostrar todas las opciones
-        tipoSelect.dispatchEvent(new Event("change"));
-    });
-</script>
-
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 
 </body>
+
 </html>

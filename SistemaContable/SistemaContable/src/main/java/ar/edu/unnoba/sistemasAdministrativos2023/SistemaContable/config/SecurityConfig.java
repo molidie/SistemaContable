@@ -45,10 +45,16 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/admin/home")
                         .permitAll())
 
-                .logout((logout) -> logout.permitAll());
+               
+                
+                .logout((logout) -> logout
+                .logoutUrl("/admin/")
+                .logoutSuccessUrl("/admin/login")
+                .permitAll()
+        );
 
         return http.build();
-    }
+    } 
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -66,6 +72,5 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
-
     }
 }
