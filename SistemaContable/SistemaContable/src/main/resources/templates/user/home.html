@@ -32,22 +32,22 @@
             <a class="nav-link" href="#">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin/cuenta/plan}">Asientos</a>
+            <a class="nav-link" th:href="@{/user/cuenta/plan}">Asientos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin/cuenta/plan}">Plan de cuentas</a>
+            <a class="nav-link" th:href="@{/user/cuenta/plan}">Plan de cuentas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">Libro
+            <a class="nav-link" th:href="@{/user/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">Libro
               diario</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin/cuenta/detalle?cuentaId=1}">Libro mayor</a>
+            <a class="nav-link" th:href="@{/user/cuenta/detalle?cuentaId=1}">Libro mayor</a>
           </li>
         </ul>
 
       </div>
-      <form action="#" th:action="@{/admin/login}" th:method="post" class="d-flex">
+      <form action="#" th:action="@{/user/login}" th:method="post" class="d-flex">
         <input class="btn btn-warning form-control me-2" type="submit" value="Cerrar sesión"
           onclick="return confirm('¿Desea cerrar sesión?');">
       </form>
