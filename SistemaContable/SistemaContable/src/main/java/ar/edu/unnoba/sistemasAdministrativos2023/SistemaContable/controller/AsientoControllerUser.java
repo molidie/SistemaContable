@@ -196,7 +196,7 @@ public class AsientoControllerUser {
     @GetMapping("/cancelar")
     public String cancelar(Model model) {
         listaAsientos.clear();
-        return "redirect:/user/home";
+        return "redirect:/user/cuenta/plan";
     }
 
     @GetMapping("/eliminar/{id}")
