@@ -88,12 +88,12 @@
                 <td>
                     <!-- Botón de Editar -->
                     <a class="btn btn-outline-success"
-                       th:href="@{/admin/asiento/editar/{idE}(idE=${asiento.getCodigo()})}">
+                       th:href="@{/user/asiento/editar/{idE}(idE=${asiento.getCodigo()})}">
                         Editar
                     </a>
                     <!-- Botón de Eliminar -->
                     <a class="btn btn-outline-danger"
-                       th:href="@{/admin/asiento/eliminar/{id}(id=${asiento.getCodigo()})}">
+                       th:href="@{/user/asiento/eliminar/{id}(id=${asiento.getCodigo()})}">
                         Eliminar
                     </a>
 
@@ -102,8 +102,8 @@
             </tbody>
         </table>
     </div>
-    <td><a class="btn btn-outline-danger" th:href="@{/admin/asiento/cancelar}">Cancelar</a></td>
-    <td><a class="btn btn-outline-danger" th:href="@{/admin/asiento/agregar}">Guardar</a></td>
+    <td><a class="btn btn-outline-danger" th:href="@{/user/asiento/cancelar}">Cancelar</a></td>
+    <td><a class="btn btn-outline-danger" th:href="@{/user/asiento/agregar}">Guardar</a></td>
 </div>
 
 

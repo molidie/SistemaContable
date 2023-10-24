@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Libro Mayor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-custom {
+            background-color: #e85d04; /* Color naranja */
+        }
+        .navbar-brand img {
+            max-height: 40px; /* Ajusta el alto máximo de la imagen */
+        }
+    </style>
+</head>
+<body style="background-color: #ffffff;">
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="/css/AD.png" alt="Logo">
+        </a>
+        <a class="navbar-brand" href="#">Mi Página</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/user/home/}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/cuenta/plan}">Plan de cuentas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/asiento/librodiario?desde=2023-01-01&hasta=2024-12-31}">Libro diario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/cuenta/detalle?cuentaId=1}">Libro mayor</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="card mt-4 mx-auto" style="max-width: 800px;">
+    <div class="card-body text-center">
+        <h1>Libro Mayor de <td th:text="${cuenta.nombre}"></td></h1>
+
+        <form th:action="@{/user/cuenta/detalle}" method="get" class="mt-4">
+            <label for="cuentaId">Selecciona una cuenta:</label>
+            <select name="cuentaId" id="cuentaId" class="form-select">
+                <option value="">Selecciona una cuenta</option>
+                <option th:each="cuenta : ${cuentas}" th:value="${cuenta.id}" th:text="${cuenta.nombre}"></option>
+            </select>
+            <br>
+            <button type="submit" class="btn btn-primary">Ver Libro Mayor</button>
+            <br>
+        </form>
+        <div class="table-responsive">
+            <table th:if="${cuenta != null}" class="table table-striped table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Fecha</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
+                    <th>Saldo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="asiento : ${asientos}">
+                    <td th:text="${cuenta.codigo}"></td>
+                    <td th:text="${asiento.fecha}"></td>
+                    <td th:text="${asiento.debe}"></td>
+                    <td th:text="${asiento.haber}"></td>
+                    <td th:text="${cuenta.saldo_actual}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

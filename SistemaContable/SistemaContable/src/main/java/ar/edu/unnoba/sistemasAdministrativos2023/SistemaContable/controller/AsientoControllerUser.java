@@ -5,22 +5,26 @@ import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Cuenta;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.CuentaRepository;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.CuentaService;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service.IAsientoService;
+
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Column;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user/asiento")
 public class AsientoControllerUser {
     private IAsientoService asientoService;
+    @Autowired
     private CuentaService cuentaService;
     private int contador = 0;
     private float debe;
@@ -41,7 +45,7 @@ public class AsientoControllerUser {
 
     @Autowired
     public AsientoControllerUser(IAsientoService asientoService, CuentaService cuentaService,
-                                 CuentaRepository cuentaRepository) {
+                             CuentaRepository cuentaRepository) {
         this.asientoService = asientoService;
         this.cuentaService = cuentaService;
         this.cuentaRepository = cuentaRepository;
@@ -54,19 +58,26 @@ public class AsientoControllerUser {
             model.addAttribute("selectedDate", selectedDate);
         }
 
+        // Filtra las cuentas disponibles eliminando las cuentas seleccionadas
+        List<Cuenta> cuentasDisponibles = cuentaService.cuentasHijasNoPadre();
+        for (Asiento a : listaAsientos) {
+            for (Cuenta cuenta : a.getCuentas()) {
+                cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
+            }
+        }
+
         model.addAttribute("asiento", new Asiento());
-        model.addAttribute("cuentas", cuentaService.cuentasHijas());
+        model.addAttribute("cuentas", cuentasDisponibles);
         model.addAttribute("asientos", listaAsientos);
         model.addAttribute("diferencia", diferencia);
 
-        return "admin/asiento/new";
+        return "user/asiento/new";
     }
 
     @PostMapping
     public String create(@ModelAttribute Asiento asiento, @RequestParam Long cuentaId, Model model, HttpServletResponse response) {
         float debe1 = 0;
         float haber1 = 0;
-
 
         Cuenta cuentaSeleccionada = cuentaService.obtenerCuentaPorId(cuentaId);
         if (asiento.getCuentas() == null) {
@@ -76,10 +87,9 @@ public class AsientoControllerUser {
         cuentaSeleccionada.getAsientos().add(asiento);
 
         listaAsientos.add(asiento);
-        Asiento fecha = listaAsientos.get(0);
+        Asiento fecha = listaAsientos.get(0); // hace que la fecha sea siempre la misma
 
-
-        model.addAttribute("cuentas", cuentaService.cuentasHijas());
+        model.addAttribute("cuentas", cuentaService.cuentasHijasNoPadre());
         model.addAttribute("asientos", listaAsientos);
 
         asiento.setCodigo(contador);
@@ -102,55 +112,91 @@ public class AsientoControllerUser {
             response.addCookie(cookie);
         }
 
-        for(Asiento a : listaAsientos){
+        for (Asiento a : listaAsientos) {
             a.setFecha(fecha.getFecha());
         }
+        for (Asiento a : listaAsientos) {
+            listacuentas.removeAll(a.getCuentas());
+        }
 
+        // Filtra las cuentas disponibles eliminando las cuentas seleccionadas
+        List<Cuenta> cuentasDisponibles = cuentaService.cuentasHijasNoPadre();
+        for (Asiento a : listaAsientos) {
+            for (Cuenta cuenta : a.getCuentas()) {
+                cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
+            }
+        }
 
-        return "admin/asiento/new";
+        // Actualiza la lista de cuentas disponibles en el modelo
+        model.addAttribute("cuentas", cuentasDisponibles);
+
+        return "user/asiento/new";
     }
-
 
     @GetMapping("/librodiario")
     public String LibroDiario(@RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
-                                     @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
-                                     Model model) {
+                              @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
+                              Model model) {
         List<Asiento> librodiario = asientoService.obtenerLibroDiarioEntreFechas(fechaDesde, fechaHasta);
-        model.addAttribute("libro", librodiario);
-        return "/admin/asiento/librodiario";
+
+        // Agrupa los asientos por fecha utilizando un Map
+        Map<LocalDate, List<Asiento>> asientosAgrupados = librodiario.stream()
+                .collect(Collectors.groupingBy(Asiento::getFecha));
+
+        // Ordena las fechas de menor a mayor
+        List<LocalDate> fechasOrdenadas = asientosAgrupados.keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
+
+        // Crea un nuevo mapa con las fechas ordenadas
+        LinkedHashMap<LocalDate, List<Asiento>> asientosAgrupadosOrdenados = new LinkedHashMap<>();
+        fechasOrdenadas.forEach(fecha -> asientosAgrupadosOrdenados.put(fecha, asientosAgrupados.get(fecha)));
+
+        model.addAttribute("libroAgrupado", asientosAgrupadosOrdenados);
+        return "/user/asiento/librodiario";
     }
 
 /**
-    @GetMapping("/cancelar")
-    public String cancelar(Model model) {
+ @GetMapping("/librodiario")
+ public String LibroDiario(@RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaDesde,
+ @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fechaHasta,
+ Model model) {
+ List<Asiento> librodiario = asientoService.obtenerLibroDiarioEntreFechas(fechaDesde, fechaHasta);
+ model.addAttribute("libro", librodiario);
+ return "/admin/asiento/librodiario";
+ }**/
 
-        for(Asiento a : listaAsientos){
-            for (Cuenta cuenta : cuentaService.getAll()) {
-                cuenta.getAsientos().remove(a.getId());
-            }
-            asientoService.delete(a.getId());
-        }
-        listaAsientos.clear(); // Limpia la lista en memoria.
-        return "redirect:/admin/asiento/new";
-    }funcion que deje por las dudas**/
+    /**
+     @GetMapping("/cancelar")
+     public String cancelar(Model model) {
+
+     for(Asiento a : listaAsientos){
+     for (Cuenta cuenta : cuentaService.getAll()) {
+     cuenta.getAsientos().remove(a.getId());
+     }
+     asientoService.delete(a.getId());
+     }
+     listaAsientos.clear(); // Limpia la lista en memoria.
+     return "redirect:/admin/asiento/new";
+     }funcion que deje por las dudas**/
 
     @GetMapping("/agregar")
     public String agregar(Model model) {
         if(listaAsientos.size() <= 1){
-            return "redirect:/admin/asiento/new";
+            return "redirect:/usesr/asiento/new";
         }
         for (Asiento asiento: listaAsientos){
 
             asientoService.create(asiento);
         }
         listaAsientos.clear();
-        return "redirect:/admin/home";
+        return "redirect:/user/home";
     }
 
     @GetMapping("/cancelar")
     public String cancelar(Model model) {
         listaAsientos.clear();
-        return "redirect:/admin/home";
+        return "redirect:/user/home";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -169,7 +215,7 @@ public class AsientoControllerUser {
         }
         model.addAttribute("asientos", listaAsientos);
         model.addAttribute("diferencia", diferencia);
-        return "redirect:/admin/asiento/new";
+        return "redirect:/user/asiento/new";
     }
 
     @GetMapping ("/editar/{idE}")
@@ -182,9 +228,8 @@ public class AsientoControllerUser {
         model.addAttribute("asiento",asiento);
         model.addAttribute("cuentas", cuentaService.cuentasHijas());
 
-        return "/admin/asiento/edit";
+        return "/user/asiento/edit";
     }
-
 
 
     @PostMapping("/editarAsiento/{idE}")
@@ -218,9 +263,13 @@ public class AsientoControllerUser {
                 }
                 diferencia=debe2-haber2;
             }
+            for(Asiento asiento1 : listaAsientos){
+                asiento1.setFecha(a.getFecha());
+            }
+
         }
 
-        return "redirect:/admin/asiento/new";
+        return "redirect:/user/asiento/new";
     }
 
 }
