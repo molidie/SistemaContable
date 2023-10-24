@@ -22,7 +22,7 @@
         <a class="navbar-brand" href="#">
             <img src="/css/AD.png" alt="Logo">
         </a>
-        <a class="navbar-brand" href="#">Mi Página</a>
+        <a class a="navbar-brand" href="#">Mi Página</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -68,10 +68,6 @@
         <div class="form-group">
             <label for="hasta">Hasta:</label>
             <input type="date" id="hasta" name="hasta" class="form-control" required>
-            <a class="btn btn-outline-danger"
-               th:href="@{/user/asiento/new}">
-                Agregar Asiento
-            </a>
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
@@ -128,12 +124,22 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- Agregar el botón de impresión -->
+    <button onclick="imprimirLibroDiarioPDF()" class="btn btn-primary">Imprimir Libro Diario</button>
 </div>
 
-<!-- Agrega el enlace a jQuery y Bootstrap JS (asegúrate de que las URLs sean correctas) -->
+<!-- Agregar el enlace a jQuery y Bootstrap JS (asegúrate de que las URLs sean correctas) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Agregar el script para la función de impresión -->
+<script>
+    function imprimirLibroDiarioPDF() {
+        window.print();
+    }
+</script>
 
 </body>
 </html>

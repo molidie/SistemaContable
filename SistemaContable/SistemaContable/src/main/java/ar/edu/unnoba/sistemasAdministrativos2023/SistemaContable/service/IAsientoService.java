@@ -16,4 +16,6 @@ public interface IAsientoService  {
     public List<Asiento> obtenerLibroDiarioEntreFechas(LocalDate fechaInicio, LocalDate fechaFin);
 
     Asiento editarAsiento(Asiento a);
+
+    int contarAsientosEnElMesActual();
 }

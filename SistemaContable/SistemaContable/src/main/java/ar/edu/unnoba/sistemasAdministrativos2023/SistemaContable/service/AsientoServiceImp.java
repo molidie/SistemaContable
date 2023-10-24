@@ -1,21 +1,17 @@
 package ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.service;
 
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Asiento;
-import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.model.Usuarios;
 import ar.edu.unnoba.sistemasAdministrativos2023.SistemaContable.repository.AsientoRepository;
-import net.bytebuddy.asm.Advice;
-import org.checkerframework.checker.formatter.qual.Format;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -65,5 +61,27 @@ public class AsientoServiceImp implements IAsientoService, UserDetailsService {
     @Override
     public Asiento editarAsiento(Asiento a) {
         return asientoRepository.save(a);
+    }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // Otras implementaciones de métodos del servicio...
+
+    @Override
+    public int contarAsientosEnElMesActual() {
+        LocalDate fechaInicio = LocalDate.now().withDayOfMonth(1); // Primer día del mes actual
+        LocalDate fechaFin = LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1); // Último día del mes actual
+
+        Query query = entityManager.createQuery(
+                "SELECT COUNT(a) FROM Asiento a WHERE a.fecha BETWEEN :fechaInicio AND :fechaFin",
+                Long.class
+        );
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+
+        Long resultado = (Long) query.getSingleResult();
+
+        return resultado.intValue();
     }
 }

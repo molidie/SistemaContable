@@ -62,6 +62,20 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>5.7.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.28</version> <!-- Asegúrate de usar la última versión disponible -->
+		</dependency>
+
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
