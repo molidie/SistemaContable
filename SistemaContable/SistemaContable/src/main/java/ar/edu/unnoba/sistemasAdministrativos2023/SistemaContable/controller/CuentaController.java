@@ -73,7 +73,7 @@ public class CuentaController {
         }
         cuenta.setCodigo(codigo);
         cuentaService.create(cuenta);
-        return "redirect:/admin/home";
+        return "redirect:/admin/cuenta/plan";
     }
 
     @GetMapping("/detalle")
