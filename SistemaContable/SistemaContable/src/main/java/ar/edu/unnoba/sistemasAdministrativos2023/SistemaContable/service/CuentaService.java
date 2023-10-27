@@ -19,4 +19,5 @@ public interface CuentaService {
     float CalcularSaldo(Cuenta cuenta);
 
 
+    Cuenta obtenerCuentaPorCod(int cod);
 }

@@ -47,7 +47,7 @@
     </nav>
 <h1>Editar Asiento</h1>
 
-<form th:action="@{'/admin/cuenta/editarCuenta/' + ${cuenta.id}}" th:object="${cuenta}" method="post">
+    <form th:action="@{/admin/cuenta/editarCuenta/{idE}(idE=${cuenta.getId()})}" th:object="${cuenta}" method="post">
     <!-- Campo Descripción -->
     <div class="user-details">
 

@@ -69,7 +69,7 @@ public class CuentaController {
         if (codigo == 190 || codigo == 290 || codigo == 390 || codigo == 490 || codigo == 590 || codigo == 199 || codigo == 299 || codigo == 399 || codigo == 499 || codigo == 599 || codigo == 600) {
             model.addAttribute("error", "No se puede crear una cuenta con el código " + codigo);
 
-            return "/admin/cuenta/newcuenta";
+            return "/admin/cuenta/new";
         }
         cuenta.setCodigo(codigo);
         cuentaService.create(cuenta);
@@ -90,7 +90,7 @@ public class CuentaController {
 
     private int calcularCodigoResultadoPositivo(Cuenta cuenta,int codigo) {
 
-        int contador = 0; // Valor base para RESULTADO_POSITIVO
+        int contador = 0;
         Cuenta cuentaPadre = cuenta;
         Cuenta padre = cuenta;
 
@@ -139,20 +139,25 @@ public class CuentaController {
         return "redirect:/admin/cuenta/plan";
     }
 
-
-
     @PostMapping("/editarCuenta/{idE}")
     public String actualizarProdcuto(@PathVariable("idE") Long id, @ModelAttribute Cuenta cuenta, Model model) {
-        Cuenta cuentaseleccionada = cuentaService.obtenerCuentaPorId(id);
-        cuentaseleccionada.setId(cuenta.getId());
-        cuentaseleccionada.setPadre(cuenta.getPadre());
-        calcularCodigoResultadoPositivo(cuentaseleccionada,cuenta.getCodigo());
-        cuentaseleccionada.setAsientos(cuenta.getAsientos());
-        cuentaseleccionada.setNombre(cuenta.getNombre());
-        cuentaseleccionada.setSaldo(cuenta.isSaldo());
-        cuentaseleccionada.setSaldo_actual(cuenta.getSaldo_actual());
-        cuentaseleccionada.setTipo(cuenta.getTipo());
+        model.addAttribute("cuenta",cuenta);
+        Cuenta cuentaSeleccionada= cuentaService.obtenerCuentaPorId(id);
+        List<Cuenta> cuentaList = cuentaService.getAll();
+        for(Cuenta cuenta1 : cuentaList){
+            if(cuenta1.getCodigo() == cuenta.getCodigo()){
+                return "redirect:/admin/cuenta/plan";
+            }
 
+        }
+        int cod = cuenta.getCodigo()-1;
+        Cuenta cuentaHermana = cuentaService.obtenerCuentaPorCod(cod);
+        cuenta.setPadre(cuentaHermana.getPadre());
+        cuenta.setTipo(cuentaHermana.getTipo());
+
+        cuentaSeleccionada.setPadre(cuenta.getPadre());
+        cuentaSeleccionada.setTipo(cuenta.getTipo());
+        cuentaSeleccionada.setCodigo(cuenta.getCodigo());
         return "redirect:/admin/cuenta/plan";
     }
 

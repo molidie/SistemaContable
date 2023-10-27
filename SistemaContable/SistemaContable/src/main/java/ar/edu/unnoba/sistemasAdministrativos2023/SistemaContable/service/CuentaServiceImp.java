@@ -60,6 +60,10 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
     public Cuenta obtenerCuentaPorId(Long cuentaId) {
         return cuentaRepository.findById(cuentaId).orElse(null);
     }
+    @Override
+    public Cuenta obtenerCuentaPorCod(int cuentaId) {
+        return cuentaRepository.findByCodigo(cuentaId);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
