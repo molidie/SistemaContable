@@ -79,7 +79,7 @@
     </nav>
     <div class="container" style="max-width: 800px;">
         <h3 class="mb-2">Registrar nueva cuenta</h3>
-        <form action="#" th:action="@{/admin/cuenta/new}" th:object="${cuenta}" method="post">
+        <form action="#" th:action="@{/admin/cuenta}" th:object="${cuenta}" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-2">
@@ -127,7 +127,7 @@
                 -->
             </div>
             <div class="button">
-                <button class="btn btn-outline-success" type="submit" name="asientoCuenta">Guardar cuenta</button>
+                <input type="submit" value="Registrar" name="asientoCuenta">
             </div>
         </form>
     </div>

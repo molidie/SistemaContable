@@ -84,7 +84,11 @@
                                        th:href="@{/user/cuenta/editar/{idE}(idE=${cuenta.getId()})}">
                                         Editar
                                     </a>
-                                    <a href="javascript:void(0);" class="eliminar-cuenta" data-cuenta-id="${cuenta.id}">Eliminar</a>
+
+                                    <a class="btn btn-outline-success"
+                                       th:href="@{/user/cuenta/eliminar/{idE}(idE=${cuenta.getId()})}">
+                                        Editar
+                                    </a>
                                 </td>
                             </tr>
                             </tbody>

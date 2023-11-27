@@ -119,11 +119,26 @@ public class AsientoControllerUser {
             listacuentas.removeAll(a.getCuentas());
         }
 
+
         // Filtra las cuentas disponibles eliminando las cuentas seleccionadas
         List<Cuenta> cuentasDisponibles = cuentaService.cuentasHijasNoPadre();
         for (Asiento a : listaAsientos) {
             for (Cuenta cuenta : a.getCuentas()) {
                 cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
+            }
+        }
+
+        if(cuentaSeleccionada.getTipo().name() == "ACTIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_NEGATIVO" ){
+            if(cuentaSeleccionada.getSaldo_actual() < asiento.getHaber()){
+                model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
+                return "user/asiento/new";
+            }
+        }
+
+        if(cuentaSeleccionada.getTipo().name() == "PASIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_POSITIVO" ){
+            if(cuentaSeleccionada.getSaldo_actual() < asiento.getDebe()){
+                model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
+                return "user/asiento/new";
             }
         }
 
@@ -183,7 +198,7 @@ public class AsientoControllerUser {
     @GetMapping("/agregar")
     public String agregar(Model model) {
         if(listaAsientos.size() <= 1){
-            return "redirect:/usesr/asiento/new";
+            return "redirect:/user/asiento/new";
         }
         for (Asiento asiento: listaAsientos){
 

@@ -34,7 +34,7 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
 
         // Asignar la cuenta padre si es proporcionada
         if (cuenta.getPadre() != null) {
-            cuenta.setPadre(cuentaRepository.getOne(cuenta.getPadre().getId()));
+            cuenta.setPadre(cuentaRepository.getById(cuenta.getPadre().getId()));
         }
 
 

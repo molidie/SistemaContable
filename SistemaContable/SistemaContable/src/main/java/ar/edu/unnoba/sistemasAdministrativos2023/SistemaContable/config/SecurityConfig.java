@@ -28,7 +28,7 @@ public class SecurityConfig {
     public UserDetailsService getUserDetailsService() {
         return userDetailsService;
     }
-
+/**
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
         http
@@ -54,7 +54,7 @@ public class SecurityConfig {
         );
 
         return http.build();
-    }
+    }**/
 
     @Bean
     public UserDetailsService userDetailsService(){

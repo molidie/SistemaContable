@@ -58,10 +58,16 @@
 
         </div>
     </nav>
+    <!-- Agrega este bloque en la parte superior del formulario -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Resto del formulario... -->
 
     <div class="container" style="max-width: 900px;">
         <h3 class="mb-2">Registrar nuevo asiento</h3>
-        <form action="#" id="miFormulario" th:action="@{/admin/asiento}" th:object="${asiento}" method="post">
+        <form action="#" id="miFormulario" th:action="@{/user/asiento}" th:object="${asiento}" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -105,18 +111,12 @@
                 </div>
                 <div class="col-md-4 mt-4"> <!-- Aumentado el margen superior aquí -->
                     <div class="form-group ml-5">
-                        <a class="btn btn-outline-dark" th:href="@{/admin/cuenta/plan}">
+                        <a class="btn btn-outline-dark" th:href="@{/user/cuenta/plan}">
                             Plan de cuentas
                         </a>
                     </div>
                 </div>
-                <div class="col-md-4 mt-4">
-                    <div class="form-group">
-                        <a class="btn btn-outline-dark" th:href="@{/admin/cuenta/new}">
-                            Agregar cuenta
-                        </a>
-                    </div>
-                </div>
+
             </div>
             <div class="button">
                 <button type="submit" class="btn btn-primary" name="asientoCuenta">Registrar</button>
@@ -145,12 +145,12 @@
                         <td>
                             <!-- Botón de Editar -->
                             <a class="btn btn-outline-warning"
-                                th:href="@{/admin/asiento/editar/{idE}(idE=${asiento.getCodigo()})}">
+                                th:href="@{/user/asiento/editar/{idE}(idE=${asiento.getCodigo()})}">
                                 Editar
                             </a>
                             <!-- Botón de Eliminar -->
                             <a class="btn btn-outline-danger"
-                                th:href="@{/admin/asiento/eliminar/{id}(id=${asiento.getCodigo()})}">
+                                th:href="@{/user/asiento/eliminar/{id}(id=${asiento.getCodigo()})}">
                                 Eliminar
                             </a>
                         </td>
@@ -161,7 +161,7 @@
         <div class="mt-4">
             <a class="btn btn-outline-danger" th:href="@{/user/asiento/cancelar}">Cancelar</a>
             <a th:if="${diferencia == 0}" class="btn btn-outline-success"
-                th:href="@{/admin/asiento/agregar}">Guardar</a>
+                th:href="@{/user/asiento/agregar}">Guardar</a>
         </div>
     </div>
     <script src="/js/asientos.js"></script>

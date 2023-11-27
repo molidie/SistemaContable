@@ -41,6 +41,7 @@
                 </ul>
 
             </div>
+
             <form action="#" th:action="@{/admin/login}" th:method="post" class="d-flex">
                 <input class="btn btn-warning form-control me-2" type="submit" value="Cerrar sesión"
                     onclick="return confirm('¿Desea cerrar sesión?');">
@@ -50,6 +51,10 @@
     </nav>
     <div class="container" style="max-width: 900px;">
         <h3 class="mb-2">Registrar nuevo asiento</h3>
+        <!-- Agrega este bloque en la parte superior del formulario -->
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
         <form action="#" id="miFormulario" th:action="@{/admin/asiento}" th:object="${asiento}" method="post">
             <div class="row">
                 <div class="col-md-6">

@@ -69,7 +69,7 @@ public class CuentaController {
         if (codigo == 190 || codigo == 290 || codigo == 390 || codigo == 490 || codigo == 590 || codigo == 199 || codigo == 299 || codigo == 399 || codigo == 499 || codigo == 599 || codigo == 600) {
             model.addAttribute("error", "No se puede crear una cuenta con el código " + codigo);
 
-            return "/admin/cuenta/new";
+            return "/admin/cuenta/newcuenta";
         }
         cuenta.setCodigo(codigo);
         cuentaService.create(cuenta);
@@ -158,21 +158,8 @@ public class CuentaController {
         cuentaSeleccionada.setPadre(cuenta.getPadre());
         cuentaSeleccionada.setTipo(cuenta.getTipo());
         cuentaSeleccionada.setCodigo(cuenta.getCodigo());
+        cuentaService.create(cuentaSeleccionada);
         return "redirect:/admin/cuenta/plan";
     }
-
-
-
-
-
-
-
-        /**while(cuentatemp.getPadre().getPadre() != null){
-         codigotemp=contadorPadres*10;
-         contadorPadres+=1;
-         cuentatemp = cuenta.getPadre();
-         }
-
-         codigo = 500+(codigotemp*contadorPadres*cuentaSeleccionada.getHijos().size());**/
 
 }
