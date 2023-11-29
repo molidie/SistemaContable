@@ -126,16 +126,17 @@ public class AsientoController {
                 cuentasDisponibles.removeIf(c -> c.getId().equals(cuenta.getId()));
             }
         }
+        float saldo=cuentaService.CalcularSaldo(cuentaSeleccionada);
 
         if(cuentaSeleccionada.getTipo().name() == "ACTIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_NEGATIVO" ){
-            if(cuentaSeleccionada.getSaldo_actual() < asiento.getHaber()){
+            if(saldo < 0.0){
                 model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
                 return "admin/asiento/new";
             }
         }
 
         if(cuentaSeleccionada.getTipo().name() == "PASIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_POSITIVO" ){
-            if(cuentaSeleccionada.getSaldo_actual() < asiento.getDebe()){
+            if(saldo< 0.0){
                 model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
                 return "admin/asiento/new";
             }

@@ -103,13 +103,18 @@ public class CuentaServiceImp implements CuentaService, UserDetailsService {
             for(Asiento a : cuenta.getAsientos()){
                 saldo += a.getDebe();
                 saldo -= a.getHaber();
+
             }
+            cuenta.setSaldo_actual(saldo);
         }
         if(cuenta.getTipo().name() == "PASIVO" || cuenta.getTipo().name() == "RESULTADO_POSITIVO"  ){
             for(Asiento a : cuenta.getAsientos()){
                 saldo -= a.getDebe();
                 saldo += a.getHaber();
+
+
             }
+            cuenta.setSaldo_actual(saldo);
         }
         return saldo;
     }

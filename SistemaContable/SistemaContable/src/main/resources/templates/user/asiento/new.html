@@ -73,8 +73,9 @@
                     <div class="form-group">
                         <label for="fecha">Fecha</label>
                         <input type="date" id="fecha" class="form-control" th:field="*{fecha}" placeholder="dd/mm/aaaa"
-                            required>
+                               required th:min="1900-01-01" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
                     </div>
+                </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
