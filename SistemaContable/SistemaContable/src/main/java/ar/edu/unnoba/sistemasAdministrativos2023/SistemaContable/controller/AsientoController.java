@@ -131,6 +131,7 @@ public class AsientoController {
         if(cuentaSeleccionada.getTipo().name() == "ACTIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_NEGATIVO" ){
             if(saldo < 0.0){
                 model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
+                listaAsientos.remove(asiento);
                 return "admin/asiento/new";
             }
         }
@@ -138,6 +139,7 @@ public class AsientoController {
         if(cuentaSeleccionada.getTipo().name() == "PASIVO" ||cuentaSeleccionada.getTipo().name() == "RESULTADO_POSITIVO" ){
             if(saldo< 0.0){
                 model.addAttribute("error", "El Debe o Haber del asiento no puede ser mayor que el saldo actual de la cuenta.");
+                listaAsientos.remove(asiento);
                 return "admin/asiento/new";
             }
         }
